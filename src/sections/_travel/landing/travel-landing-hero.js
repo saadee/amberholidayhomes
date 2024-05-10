@@ -42,7 +42,7 @@ export default function TravelLandingHero({ tours }) {
 
   const carouselThumb = useCarousel({
     vertical: true,
-    slidesToShow: 3,
+    slidesToShow: 4,
     centerMode: true,
     slidesToScroll: 1,
     swipeToSlide: true,
@@ -79,6 +79,7 @@ export default function TravelLandingHero({ tours }) {
             height: 1,
             maxWidth: 220,
             position: 'absolute',
+            // border: '1px solid red',
             right: { xs: 20, lg: '6%', xl: '10%' },
           }}
         >
@@ -149,9 +150,9 @@ function CarouselItem({ tour }) {
           position: { md: 'absolute' },
         }}
       >
-        <Typography variant="overline" sx={{ color: 'info.main', mb: 5 }}>
+        {/* <Typography variant="overline" sx={{ color: 'info.main', mb: 5 }}>
           {tour.location}
-        </Typography>
+        </Typography> */}
 
         <Typography variant="h1" sx={{ maxWidth: 480 }}>
           {tour.slug}

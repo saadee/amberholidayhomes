@@ -2,8 +2,8 @@ import InputBase from '@mui/material/InputBase';
 import Autocomplete from '@mui/material/Autocomplete';
 import InputAdornment from '@mui/material/InputAdornment';
 
-import { countries } from 'src/assets/data';
 import Iconify from 'src/components/iconify';
+import { propertylocationsAreas } from 'src/_mock';
 
 // ----------------------------------------------------------------------
 
@@ -12,8 +12,8 @@ export default function FilterLocation() {
     <Autocomplete
       sx={{ width: 1 }}
       popupIcon={null}
-      options={countries}
-      getOptionLabel={(option) => option.label}
+      options={propertylocationsAreas}
+      getOptionLabel={(option) => option}
       renderInput={(params) => (
         <InputBase
           {...params.InputProps}
@@ -25,23 +25,18 @@ export default function FilterLocation() {
               <Iconify width={24} icon="carbon:location" sx={{ color: 'text.disabled', mr: 1 }} />
             </InputAdornment>
           }
-          sx={{ height: 44, typography: 'subtitle1', color: 'inherit' }}
+          sx={{ height: 44, typography: 'subtitle1', color: 'white' }}
         />
       )}
       renderOption={(props, option) => {
-        if (!option.label) {
+        if (!option) {
           return null;
         }
 
         return (
-          <li {...props} key={option.label}>
-            <Iconify
-              key={option.label}
-              icon={`circle-flags:${option.code.toLowerCase()}`}
-              width={28}
-              sx={{ mr: 1 }}
-            />
-            {option.label} ({option.code}) +{option.phone}
+          <li {...props} key={option}>
+            <Iconify key={option} icon="carbon:location" width={28} sx={{ mr: 1 }} />
+            {option}
           </li>
         );
       }}

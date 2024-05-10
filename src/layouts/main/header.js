@@ -5,14 +5,14 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import Container from '@mui/material/Container';
 import { useTheme } from '@mui/material/styles';
+import Container from '@mui/material/Container';
 
 import { bgBlur } from 'src/theme/css';
 import Logo from 'src/components/logo';
 import { paths } from 'src/routes/paths';
-import { useResponsive } from 'src/hooks/use-responsive';
 import { useOffSetTop } from 'src/hooks/use-off-set-top';
+import { useResponsive } from 'src/hooks/use-responsive';
 
 import { HEADER } from '../config-layout';
 import HeaderShadow from '../common/header-shadow';
@@ -93,11 +93,11 @@ export default function Header({ headerOnDark }) {
               <Button
                 variant="contained"
                 color="inherit"
-                href={paths.zoneStore}
+                href={paths.adminPortal}
                 target="_blank"
                 rel="noopener"
               >
-                Buy Now
+                Owner Portal
               </Button>
             )}
           </Stack>

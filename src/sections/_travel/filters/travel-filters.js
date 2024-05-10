@@ -14,7 +14,7 @@ import FilterLocation from './filter-location';
 // ----------------------------------------------------------------------
 
 export default function TravelFilters({ sx, ...other }) {
-  const [departureDay, setDepartureDay] = useState(null);
+  const [departureDay, setDepartureDay] = useState([null,null]);
 
   const [guests, setGuests] = useState({
     adults: 0,

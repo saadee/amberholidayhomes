@@ -1,0 +1,79 @@
+/* eslint-disable import/no-extraneous-dependencies */
+
+//---------------------------------------------------------------------
+// React, Next and other third-party modules imports
+//---------------------------------------------------------------------
+import PropTypes from 'prop-types';
+import { query, getDocs, orderBy, collection } from 'firebase/firestore';
+import { useMemo, useState, useEffect, useContext, createContext } from 'react';
+
+import { useBoolean } from 'src/hooks/use-boolean';
+
+import { DB } from './AuthContext';
+
+export const PropertyContext = createContext({});
+export const usePropertyContext = () => useContext(PropertyContext);
+
+// ----------------------------------------------------------------------
+
+export const PropertyProvider = ({ children }) => {
+  const isPropertiesLoading = useBoolean();
+
+  // ---------------------------------------------------------------------
+  //  Local states
+  // ---------------------------------------------------------------------
+  const [properties, setProperties] = useState([]);
+
+  //--------------------------------------------------------------------
+  // Side Effects
+  //--------------------------------------------------------------------
+  useEffect(() => {
+    // get the Property Owners
+    getAllProperties();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  //--------------------------------------------------------------------
+  // Callbacks
+  //--------------------------------------------------------------------
+
+  const getAllProperties = async () => {
+    isPropertiesLoading.onToggle();
+    // Reference to the 'properties' collection
+    const propertyCollection = collection(DB, 'property');
+
+    // Query to get all documents ordered by 'createdAt' in descending order
+    const q = query(propertyCollection, orderBy('createdAt', 'desc'));
+
+    try {
+      const querySnapshot = await getDocs(q);
+
+      const data = [];
+
+      querySnapshot.forEach((d) => {
+        data.push({ id: d.id, ...d.data() });
+      });
+
+      setProperties(data);
+      isPropertiesLoading.onToggle();
+    } catch (error) {
+      isPropertiesLoading.onToggle();
+      console.error('Error getting documents: ', error);
+    }
+  };
+
+  //--------------------------------------------------------------------
+  // Return
+  //--------------------------------------------------------------------
+  const memoizedValue = useMemo(
+    () => ({
+      properties,
+      setProperties,
+    }),
+    [properties]
+  );
+  return <PropertyContext.Provider value={memoizedValue}>{children}</PropertyContext.Provider>;
+};
+
+PropertyProvider.propTypes = {
+  children: PropTypes.node,
+};

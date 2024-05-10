@@ -81,3 +81,17 @@ export const _mock = {
       `https://www.dropbox.com/s/7cx04n8rr4w5rbg/video_02.mp4?dl=0`,
     ][index],
 };
+
+export const propertylocationsAreas = [
+  'Downtown',
+  'Business Bay',
+  'Madinat Jumeirah Living',
+  'Dubai Marina',
+  'Dubai Hills Estate',
+  'Damac Hills',
+  'Arabian Ranches',
+  'Dubai Creek Harbour',
+  'Emaar Beach Front',
+  'Palm Jumeirah',
+  'Bluewaters',
+];

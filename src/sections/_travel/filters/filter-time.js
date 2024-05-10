@@ -1,45 +1,35 @@
 import PropTypes from 'prop-types';
 
-import InputBase from '@mui/material/InputBase';
-import InputAdornment from '@mui/material/InputAdornment';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
+// import InputBase from '@mui/material/InputBase';
+// import InputAdornment from '@mui/material/InputAdornment';
+// import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { SingleInputDateRangeField } from '@mui/x-date-pickers-pro/SingleInputDateRangeField';
 
-import Iconify from 'src/components/iconify';
+// import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function FilterTime({ departureDay, onChangeDepartureDay, sx }) {
+export default function FilterTime({ departureDay, onChangeDepartureDay, sx, ...other }) {
   return (
-    <MobileDatePicker
+    <DateRangePicker
+      format="dd/MM/yyyy"
+      label="Check In & Check Out"
+      slots={{ field: SingleInputDateRangeField }}
       value={departureDay}
       onChange={onChangeDepartureDay}
-      slots={{
-        textField: ({ inputProps, InputProps, inputRef, error, ...inputOther }) => (
-          <InputBase
-            fullWidth
-            {...InputProps}
-            ref={InputProps?.ref}
-            inputRef={inputRef}
-            inputProps={{
-              ...inputProps,
-              ...inputOther,
-              placeholder: 'Departure day',
-            }}
-            startAdornment={
-              <InputAdornment position="start">
-                <Iconify width={24} icon="carbon:calendar" sx={{ color: 'text.disabled', mr: 1 }} />
-              </InputAdornment>
-            }
-            sx={{
-              height: 44,
-              typography: 'subtitle1',
-              color: 'inherit',
-              ...sx,
-            }}
-          />
-        ),
+      sx={{
+        color: 'white',
+        width: '100%',
+        '& .MuiInputBase-input': {
+          color: 'white', // Change placeholder color here
+        },
+        '& .MuiFormLabel-root': {
+          color: 'white', // Change placeholder color here
+        },
       }}
-      {...sx}
+      // onBlur={onBlur}
+      {...other}
     />
   );
 }
