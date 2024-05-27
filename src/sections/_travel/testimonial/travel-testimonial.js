@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Unstable_Grid2';
+import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
-import Image from 'src/components/image';
 import { useResponsive } from 'src/hooks/use-responsive';
 import Carousel, { useCarousel, CarouselDots, CarouselArrows } from 'src/components/carousel';
 
@@ -12,69 +13,70 @@ import TestimonialItem from './travel-testimonial-item';
 
 // ----------------------------------------------------------------------
 
-export default function TravelTestimonial({ testimonials }) {
+export default function EcommerceTestimonial({ testimonials }) {
+  const theme = useTheme();
+
   const mdUp = useResponsive('up', 'md');
 
   const carousel = useCarousel({
     dots: !mdUp,
-    slidesToShow: 1,
+    slidesToShow: 4,
     slidesToScroll: 1,
     ...CarouselDots({
       sx: {
         mt: 8,
       },
     }),
+    responsive: [
+      {
+        // Down md
+        breakpoint: theme.breakpoints.values.md,
+        settings: { slidesToShow: 2, slidesToScroll: 3 },
+      },
+      {
+        // Down sm
+        breakpoint: theme.breakpoints.values.sm,
+        settings: { slidesToShow: 1, slidesToScroll: 1 },
+      },
+    ],
   });
 
   return (
     <Container
       sx={{
-        py: { xs: 10, md: 15 },
+        // pt: 8,
+        py: { xs: 8, md: 20 },
       }}
     >
-      <Grid container spacing={3} alignItems="center">
-        <Grid xs={12} md={6}>
-          <Typography
-            variant="h2"
-            sx={{
-              mb: 5,
-              textAlign: { xs: 'center', md: 'left' },
-            }}
-          >
-            What Our Customer Say
-          </Typography>
-
-          <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
-            {testimonials.map((testimonial) => (
-              <TestimonialItem key={testimonial.id} testimonial={testimonial} />
-            ))}
-          </Carousel>
-        </Grid>
+      <Stack alignItems="center" sx={{ mb: 8 }}>
+        <Typography variant="h3" color="primary">
+          Testimonials
+        </Typography>
+        <Typography variant="h2" sx={{ textAlign: { xs: 'center', md: 'unset' }, flexGrow: 1 }}>
+          What Our Customer Say About Us
+        </Typography>
 
         {mdUp && (
-          <Grid xs={12} md={6}>
-            <Image
-              alt="travel testimonial"
-              src="/assets/images/travel/travel_testimonial.png"
-              sx={{ maxWidth: 296, ml: 'auto' }}
-            />
-          </Grid>
+          <CarouselArrows
+            spacing={2}
+            justifyContent="center"
+            onNext={carousel.onNext}
+            onPrev={carousel.onPrev}
+          />
         )}
-      </Grid>
+      </Stack>
 
-      {mdUp && (
-        <CarouselArrows
-          spacing={2}
-          justifyContent={{ xs: 'center', md: 'unset' }}
-          onNext={carousel.onNext}
-          onPrev={carousel.onPrev}
-          sx={{ mt: 10 }}
-        />
-      )}
+      <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
+        {testimonials.map((testimonial) => (
+          <Box key={testimonial.id} sx={{ px: 1.5 }}>
+            <TestimonialItem testimonial={testimonial} />
+          </Box>
+        ))}
+      </Carousel>
     </Container>
   );
 }
 
-TravelTestimonial.propTypes = {
+EcommerceTestimonial.propTypes = {
   testimonials: PropTypes.array,
 };

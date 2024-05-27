@@ -4,7 +4,7 @@
 // React, Next and other third-party modules imports
 //---------------------------------------------------------------------
 import PropTypes from 'prop-types';
-import { query, getDocs, orderBy, collection } from 'firebase/firestore';
+import { query, getDocs, collection } from 'firebase/firestore';
 import { useMemo, useState, useEffect, useContext, createContext } from 'react';
 
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -42,7 +42,7 @@ export const PropertyProvider = ({ children }) => {
     const propertyCollection = collection(DB, 'property');
 
     // Query to get all documents ordered by 'createdAt' in descending order
-    const q = query(propertyCollection, orderBy('createdAt', 'desc'));
+    const q = query(propertyCollection);
 
     try {
       const querySnapshot = await getDocs(q);

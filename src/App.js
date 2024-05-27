@@ -2,7 +2,6 @@ import 'src/global.css';
 
 // ----------------------------------------------------------------------
 
-
 import ThemeProvider from 'src/theme';
 import Router from 'src/routes/sections';
 import { LocalizationProvider } from 'src/locales';
@@ -10,6 +9,8 @@ import ProgressBar from 'src/components/progress-bar';
 import MotionLazy from 'src/components/animate/motion-lazy';
 import { useScrollToTop } from 'src/hooks/use-scroll-to-top';
 import { SettingsDrawer, SettingsProvider } from 'src/components/settings';
+
+import { PropertyProvider } from './context/PropertyContext';
 
 // ----------------------------------------------------------------------
 
@@ -29,7 +30,9 @@ export default function App() {
           <MotionLazy>
             <ProgressBar />
             <SettingsDrawer />
-            <Router />
+            <PropertyProvider>
+              <Router />
+            </PropertyProvider>
           </MotionLazy>
         </ThemeProvider>
       </SettingsProvider>

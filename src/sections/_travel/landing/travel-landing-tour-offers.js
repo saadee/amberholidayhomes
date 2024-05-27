@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -8,24 +7,27 @@ import Typography from '@mui/material/Typography';
 
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
+import { usePropertyContext } from 'src/context/PropertyContext';
 
 import TravelTourItem from '../list/travel-tour-item';
 
 // ----------------------------------------------------------------------
 
-export default function TravelLandingTourFeatured({ tours }) {
+export default function TravelLandingTourOffers() {
+  const { properties,  } = usePropertyContext();
+
   return (
     <Container
       sx={{
         py: { xs: 5, md: 10 },
       }}
     >
-      <Stack spacing={3} sx={{ textAlign: 'center' }}>
-        <Typography variant="h3">Featured Tours</Typography>
-
-        <Typography sx={{ color: 'text.secondary' }}>
-          {`Our Featured Tours can help you find the trip that's perfect for you!`}
+      <Stack spacing={1} sx={{ textAlign: 'center' }}>
+        <Typography variant="h4" color="primary">
+          Special Offers
         </Typography>
+
+        <Typography variant="h2">Our Best Packages For You</Typography>
       </Stack>
 
       <Box
@@ -40,9 +42,11 @@ export default function TravelLandingTourFeatured({ tours }) {
           },
         }}
       >
-        {tours.map((tour) => (
-          <TravelTourItem key={tour.id} tour={tour} />
-        ))}
+        {properties
+          // ?.filter((e) => e?.discountRatio > 0)
+          .map((property) => (
+            <TravelTourItem key={property.id} property={property} />
+          ))}
       </Box>
 
       <Box sx={{ textAlign: 'center' }}>
@@ -60,6 +64,6 @@ export default function TravelLandingTourFeatured({ tours }) {
   );
 }
 
-TravelLandingTourFeatured.propTypes = {
-  tours: PropTypes.array,
+TravelLandingTourOffers.propTypes = {
+
 };

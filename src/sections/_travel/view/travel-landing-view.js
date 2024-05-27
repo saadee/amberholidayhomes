@@ -1,25 +1,30 @@
 import { useState } from 'react';
 
-import { alpha } from '@mui/system';
 import Box from '@mui/material/Box';
+import { alpha } from '@mui/system';
 import { Typography } from '@mui/material';
 import Container from '@mui/material/Container';
 
 import {
   _tours,
+  _members,
+  // _travelPosts,
+  _testimonials,
   // _travelPosts, _testimonials
 } from 'src/_mock';
 
+import PropertyAreas from '../team/property-areas';
+import TravelNewsletter from '../travel-newsletter';
 // import TravelNewsletter from '../travel-newsletter';
 import TravelFilters from '../filters/travel-filters';
-import TravelLandingHero from '../landing/travel-landing-hero';
-// import TravelTestimonial from '../testimonial/travel-testimonial';
-// import TravelLandingSummary from '../landing/travel-landing-summary';
+import TravelTestimonial from '../testimonial/travel-testimonial';
+import TravelLandingSummary from '../landing/travel-landing-summary';
+import TravelLandingFeatured from '../landing/travel-landing-featured';
+import TravelLandingTourOffers from '../landing/travel-landing-tour-offers';
+import TravelLandingListWithUs from '../landing/travel-landing-list-with-us';
 // import TravelLandingIntroduce from '../landing/travel-landing-introduce';
-// import TravelLandingToursByCity from '../landing/travel-landing-tours-by-city';
-// import TravelLandingTourFeatured from '../landing/travel-landing-tour-featured';
 // import BlogTravelLandingLatestPosts from '../../blog/travel/travel-landing-posts';
-// import TravelLandingFavoriteDestinations from '../landing/travel-landing-favorite-destinations';
+import TravelLandingFavoriteDestinations from '../landing/travel-landing-favorite-destinations';
 
 // ----------------------------------------------------------------------
 
@@ -92,23 +97,25 @@ export default function TravelLandingView() {
           />
         </Container>
       </Box>
-      <TravelLandingHero tours={_tours.slice(0, 5)} />
 
       {/* <TravelLandingIntroduce /> */}
 
-      {/* <TravelLandingSummary /> */}
+      <TravelLandingFavoriteDestinations tours={_tours.slice(0, 4)} />
 
-      {/* <TravelLandingFavoriteDestinations tours={_tours.slice(0, 4)} /> */}
+      <PropertyAreas members={_members} />
 
-      {/* <TravelLandingTourFeatured tours={_tours.slice(0, 4)} /> */}
+      <TravelLandingSummary />
 
-      {/* <TravelLandingToursByCity tours={_tours.slice(0, 8)} /> */}
+      <TravelLandingTourOffers />
+      <TravelLandingFeatured />
+
+      <TravelLandingListWithUs tours={_tours.slice(0, 8)} />
 
       {/* <BlogTravelLandingLatestPosts posts={_travelPosts.slice(2, 6)} /> */}
 
-      {/* <TravelTestimonial testimonials={_testimonials} /> */}
+      <TravelTestimonial testimonials={_testimonials} />
 
-      {/* <TravelNewsletter /> */}
+      <TravelNewsletter />
     </>
   );
 }

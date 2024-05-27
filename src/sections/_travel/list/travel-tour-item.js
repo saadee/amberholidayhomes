@@ -1,12 +1,13 @@
+/* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
 import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
+import { Chip } from '@mui/material';
 import Card from '@mui/material/Card';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
-import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
 
 import Image from 'src/components/image';
@@ -18,14 +19,41 @@ import TextMaxLine from 'src/components/text-max-line';
 
 // ----------------------------------------------------------------------
 
-export default function TravelTourItem({ tour }) {
-  const { slug, location, price, priceSale, favorited, duration, ratingNumber, coverUrl } = tour;
+export default function TravelTourItem({ property }) {
+  const {
+    slug,
+    location,
+    price,
+    priceSale,
+    favorited,
+    duration,
+    ratingNumber,
+    images,
+    title,
+    area,
+    discountRatio,
+    beds,
+    bath,
+    guests,
+    rentPerNight,
+    address,
+  } = property;
+
+  // console.log({ property });
 
   const [favorite, setFavorite] = useState(favorited);
 
   const handleChangeFavorite = useCallback((event) => {
     setFavorite(event.target.checked);
   }, []);
+
+  function deductPercentage(amount, percentage) {
+    // Calculate the deduction
+    const deduction = (amount * percentage) / 100;
+    // Subtract the deduction from the amount
+    const finalAmount = amount - deduction;
+    return finalAmount;
+  }
 
   return (
     <Card>
@@ -54,40 +82,50 @@ export default function TravelTourItem({ tour }) {
             color: (theme) => (theme.palette.mode === 'light' ? 'common.white' : 'grey.800'),
           }}
         >
-          {priceSale > 0 && (
-            <Box
-              sx={{
-                color: 'grey.500',
-                textDecoration: 'line-through',
-                mr: 0.5,
-              }}
-            >
-              {fCurrency(priceSale)}
-            </Box>
+          {discountRatio ? (
+            <>
+              <Box
+                sx={{
+                  color: 'grey.500',
+                  textDecoration: 'line-through',
+                  mr: 0.5,
+                }}
+              >
+                {rentPerNight}
+              </Box>
+              <Typography color="" fontWeight="bold">
+                {' '}
+                {fCurrency(deductPercentage(rentPerNight, discountRatio))}
+              </Typography>
+            </>
+          ) : (
+            fCurrency(rentPerNight)
           )}
-          {fCurrency(price)}
         </Stack>
+        {discountRatio && <Chip label={`${discountRatio}% OFF`} color="secondary" />}
 
-        <Checkbox
+        {/* <Checkbox
           color="error"
           checked={favorite}
           onChange={handleChangeFavorite}
           icon={<Iconify icon="carbon:favorite" />}
           checkedIcon={<Iconify icon="carbon:favorite-filled" />}
           sx={{ color: 'common.white' }}
-        />
+        /> */}
       </Stack>
 
-      <Image alt={slug} src={coverUrl} ratio="1/1" />
+      <Image alt={slug} src={images[0]} ratio="1/1" />
 
       <Stack spacing={0.5} sx={{ p: 2.5 }}>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {location}
+          <TextMaxLine persistent line={1}>
+            {address}
+          </TextMaxLine>
         </Typography>
 
         <Link component={RouterLink} href={paths.travel.tour} color="inherit">
           <TextMaxLine variant="h6" persistent>
-            {slug}
+            {title}
           </TextMaxLine>
         </Link>
       </Stack>
@@ -101,22 +139,38 @@ export default function TravelTourItem({ tour }) {
           alignItems="center"
           sx={{ typography: 'body2', color: 'text.disabled' }}
         >
-          <Iconify icon="carbon:time" width={16} sx={{ mr: 1 }} /> {duration}
+          <Iconify icon="mdi:users" width={25} sx={{ mr: 1 }} /> {guests}
+        </Stack>
+        <Stack
+          flexGrow={1}
+          direction="row"
+          alignItems="center"
+          sx={{ typography: 'body2', color: 'text.disabled' }}
+        >
+          <Iconify icon="material-symbols:bed" width={25} sx={{ mr: 1 }} /> {beds?.length}
+        </Stack>
+        <Stack
+          flexGrow={1}
+          direction="row"
+          alignItems="center"
+          sx={{ typography: 'body2', color: 'text.disabled' }}
+        >
+          <Iconify icon="solar:bath-bold" width={25} sx={{ mr: 1 }} /> {bath}
         </Stack>
 
-        <Stack spacing={0.5} direction="row" alignItems="center">
+        {/* <Stack spacing={0.5} direction="row" alignItems="center">
           <Iconify icon="carbon:star-filled" sx={{ color: 'warning.main' }} />
           <Box sx={{ typography: 'h6' }}>
             {Number.isInteger(ratingNumber) ? `${ratingNumber}.0` : ratingNumber}
           </Box>
-        </Stack>
+        </Stack> */}
       </Stack>
     </Card>
   );
 }
 
 TravelTourItem.propTypes = {
-  tour: PropTypes.shape({
+  property: PropTypes.shape({
     coverUrl: PropTypes.string,
     duration: PropTypes.string,
     favorited: PropTypes.bool,

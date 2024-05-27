@@ -1,53 +1,37 @@
 import PropTypes from 'prop-types';
 
-import Box from '@mui/material/Box';
+import { Avatar } from '@mui/material';
 import Stack from '@mui/material/Stack';
+import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
-
-import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
 export default function TestimonialItem({ testimonial, sx, ...other }) {
   return (
     <Stack
-      alignItems={{
-        xs: 'center',
-        md: 'flex-start',
-      }}
+      spacing={1}
       sx={{
-        textAlign: {
-          xs: 'center',
-          md: 'left',
-        },
+        p: 3,
+        borderRadius: 2,
+        bgcolor: 'background.neutral',
         ...sx,
       }}
       {...other}
     >
-      <Iconify width={48} icon="carbon:quotes" sx={{ opacity: 0.48, color: 'primary.main' }} />
+      <Stack direction="row" spacing={1}>
+        <Avatar alt="T" />
+        <Stack>
+          <Typography variant="subtitle1">{testimonial.name}</Typography>
+          <Typography variant="body2">Some Title</Typography>
+        </Stack>
+      </Stack>
 
-      <Typography
-        sx={{
-          mt: 2,
-          mb: 5,
-          lineHeight: 1.75,
-          fontSize: { md: 20 },
-        }}
-      >
+      <Rating size="small" value={testimonial.ratingNumber} readOnly />
+
+      <Typography variant="body2" sx={{ color: 'text.secondary' }}>
         {testimonial.review}
       </Typography>
-
-      <Stack spacing={1.5} alignItems="center" direction="row">
-        <Box
-          sx={{
-            width: 8,
-            height: 9,
-            bgcolor: 'primary.main',
-            borderRadius: '50%',
-          }}
-        />
-        <Typography variant="h6">{testimonial.name}</Typography>
-      </Stack>
     </Stack>
   );
 }
@@ -57,5 +41,7 @@ TestimonialItem.propTypes = {
   testimonial: PropTypes.shape({
     name: PropTypes.string,
     review: PropTypes.string,
+    ratingNumber: PropTypes.number,
+    createdAt: PropTypes.instanceOf(Date),
   }),
 };
