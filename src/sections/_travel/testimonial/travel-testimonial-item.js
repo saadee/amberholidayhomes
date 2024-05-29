@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 // ----------------------------------------------------------------------
 
 export default function TestimonialItem({ testimonial, sx, ...other }) {
+  const { name, comments, title, ratingNumber } = testimonial;
   return (
     <Stack
       spacing={1}
@@ -22,15 +23,15 @@ export default function TestimonialItem({ testimonial, sx, ...other }) {
       <Stack direction="row" spacing={1}>
         <Avatar alt="T" />
         <Stack>
-          <Typography variant="subtitle1">{testimonial.name}</Typography>
-          <Typography variant="body2">Some Title</Typography>
+          <Typography variant="subtitle1">{name}</Typography>
+          <Typography variant="body2">{title}</Typography>
         </Stack>
       </Stack>
 
-      <Rating size="small" value={testimonial.ratingNumber} readOnly />
+      <Rating size="small" value={ratingNumber} readOnly />
 
       <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-        {testimonial.review}
+        {comments}
       </Typography>
     </Stack>
   );
@@ -40,7 +41,8 @@ TestimonialItem.propTypes = {
   sx: PropTypes.object,
   testimonial: PropTypes.shape({
     name: PropTypes.string,
-    review: PropTypes.string,
+    comments: PropTypes.string,
+    title: PropTypes.string,
     ratingNumber: PropTypes.number,
     createdAt: PropTypes.instanceOf(Date),
   }),

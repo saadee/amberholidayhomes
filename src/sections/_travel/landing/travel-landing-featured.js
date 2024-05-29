@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
+import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { alpha, useTheme } from '@mui/material/styles';
 
@@ -67,7 +67,7 @@ export default function TravelLandingFeatured() {
           asNavFor={carouselThumb.nav}
           ref={carouselLarge.carouselRef}
         >
-          {properties.map((tour, index) => (
+          {properties?.map((tour, index) => (
             <CarouselItem key={index} tour={tour} />
           ))}
         </Carousel>
@@ -137,7 +137,9 @@ function CarouselItem({ tour }) {
   return (
     <Box>
       <Stack spacing={1} mb={3} sx={{ textAlign: 'center' }}>
-        <Typography variant="h3" color='secondary'>Featured</Typography>
+        <Typography variant="h3" color="secondary">
+          Featured
+        </Typography>
         <Typography variant="h2">Residential Properties in Dubai</Typography>
       </Stack>
       <Box

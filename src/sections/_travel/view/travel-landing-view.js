@@ -8,8 +8,6 @@ import Container from '@mui/material/Container';
 import {
   _tours,
   _members,
-  // _travelPosts,
-  _testimonials,
   // _travelPosts, _testimonials
 } from 'src/_mock';
 
@@ -113,7 +111,7 @@ export default function TravelLandingView() {
 
       {/* <BlogTravelLandingLatestPosts posts={_travelPosts.slice(2, 6)} /> */}
 
-      <TravelTestimonial testimonials={_testimonials} />
+      <TravelTestimonial />
 
       <TravelNewsletter />
     </>

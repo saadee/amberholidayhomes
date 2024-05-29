@@ -8,7 +8,7 @@ export default function TravelLandingPage() {
   return (
     <>
       <Helmet>
-        <title>Landing</title>
+        <title>AmberHoliday Homes</title>
       </Helmet>
 
       <TravelLandingView />

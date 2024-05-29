@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types';
-
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
@@ -13,7 +11,37 @@ import TestimonialItem from './travel-testimonial-item';
 
 // ----------------------------------------------------------------------
 
-export default function EcommerceTestimonial({ testimonials }) {
+const testimonials = [
+  {
+    name: 'Faisal Khan',
+    comments:
+      'Fantastic rental experience! Modern apartment, convenient location, and excellent landlord.Highly satisfied!',
+    title: 'Resident',
+    ratingNumber: 5,
+  },
+  {
+    name: 'Muhammad Ali',
+    comments:
+      'Highly recommend this property! Peaceful neighborhood, updated appliances, and attentive property management.',
+    title: 'Renter',
+    ratingNumber: 5,
+  },
+  {
+    name: 'Aisha Ahmed',
+    comments:
+      'Excellent rental choice! Convenient amenities, well-designed apartment, and professional landlord. Very happy with my decision!',
+    title: 'Tenant',
+    ratingNumber: 5,
+  },
+  {
+    name: 'Yusuf Abbas',
+    comments:
+      'Great rental property! Spacious and well-maintained with a responsive property management team. Highly recommended!',
+    title: 'Leasee',
+    ratingNumber: 5,
+  },
+];
+export default function TravelTestimonial() {
   const theme = useTheme();
 
   const mdUp = useResponsive('up', 'md');
@@ -78,6 +106,4 @@ export default function EcommerceTestimonial({ testimonials }) {
   );
 }
 
-EcommerceTestimonial.propTypes = {
-  testimonials: PropTypes.array,
-};
+TravelTestimonial.propTypes = {};

@@ -23,7 +23,7 @@ export const pageLinks = [
     subheader: 'Travel',
     cover: '/assets/images/menu/menu_travel.jpg',
     items: [
-      { title: 'Landing', path: paths.travel.root },
+      { title: 'AmberHoliday Homes', path: paths.travel.root },
       { title: 'Tours', path: paths.travel.tours },
       { title: 'Tour', path: paths.travel.tour },
       { title: 'Checkout', path: paths.travel.checkout },
