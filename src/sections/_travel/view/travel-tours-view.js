@@ -6,8 +6,8 @@ import { _tours } from 'src/_mock';
 import { useBoolean } from 'src/hooks/use-boolean';
 
 import TravelNewsletter from '../travel-newsletter';
-import TravelFilters from '../filters/travel-filters';
 import TravelTourList from '../list/travel-tour-list';
+import TravelListingFilters from '../filters/travel-listing-filters';
 
 // ----------------------------------------------------------------------
 
@@ -25,10 +25,13 @@ export default function TravelToursView() {
   return (
     <>
       <Container>
-        <TravelFilters
+        <TravelListingFilters
           sx={{
             mt: 5,
             mb: { xs: 5, md: 10 },
+            position: 'sticky',
+            top: 70,
+            zIndex: 9,
           }}
         />
 

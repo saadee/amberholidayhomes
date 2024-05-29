@@ -10,7 +10,7 @@ import { SingleInputDateRangeField } from '@mui/x-date-pickers-pro/SingleInputDa
 
 // ----------------------------------------------------------------------
 
-export default function FilterTime({ departureDay, onChangeDepartureDay, sx, ...other }) {
+export default function FilterTime({ departureDay, onChangeDepartureDay, ...other }) {
   return (
     <DateRangePicker
       format="dd/MM/yyyy"
@@ -18,16 +18,7 @@ export default function FilterTime({ departureDay, onChangeDepartureDay, sx, ...
       slots={{ field: SingleInputDateRangeField }}
       value={departureDay}
       onChange={onChangeDepartureDay}
-      sx={{
-        color: 'white',
-        width: '100%',
-        '& .MuiInputBase-input': {
-          color: 'white', // Change placeholder color here
-        },
-        '& .MuiFormLabel-root': {
-          color: 'white', // Change placeholder color here
-        },
-      }}
+      disablePast
       // onBlur={onBlur}
       {...other}
     />

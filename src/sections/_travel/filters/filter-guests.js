@@ -35,16 +35,16 @@ export default function FilterGuests({
   return (
     <>
       <InputBase
-        fullWidth
+        // fullWidth
         value={totalGuests > 0 ? `${totalGuests} Guests` : ''}
         placeholder="Guests"
         startAdornment={
           <InputAdornment position="start">
-            <Iconify width={24} icon="carbon:events" sx={{ mr: 1, color: 'text.disabled' }} />
+            <Iconify width={24} icon="carbon:events" sx={{ mr: 1, }} />
           </InputAdornment>
         }
         onClick={handleOpen}
-        sx={{ height: 44, typography: 'subtitle1', color: 'inherit', ...sx }}
+        sx={{ width: 0.8, height: 44, typography: 'subtitle1', color: 'inherit', ...sx }}
         {...other}
       />
 

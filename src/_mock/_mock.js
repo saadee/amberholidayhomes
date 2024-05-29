@@ -95,3 +95,12 @@ export const propertylocationsAreas = [
   'Palm Jumeirah',
   'Bluewaters',
 ];
+
+export const _propertyType = [
+  '1 BR Apartment',
+  '2 BR Apartment',
+  '3 BR Apartment',
+  '4 BR Apartment',
+  'Villa',
+  'Studio',
+];

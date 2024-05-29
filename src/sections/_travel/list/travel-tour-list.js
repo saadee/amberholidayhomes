@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
-import Pagination, { paginationClasses } from '@mui/material/Pagination';
+
+import { usePropertyContext } from 'src/context/PropertyContext';
 
 import TravelTourItem from './travel-tour-item';
 import TravelTourItemSkeleton from './travel-tour-item-skeleton';
@@ -9,10 +10,12 @@ import TravelTourItemSkeleton from './travel-tour-item-skeleton';
 // ----------------------------------------------------------------------
 
 export default function TravelTourList({ tours, loading }) {
+  const { properties } = usePropertyContext();
   return (
     <>
       <Box
         sx={{
+          mb:20,
           columnGap: 3,
           display: 'grid',
           rowGap: { xs: 4, md: 5 },
@@ -23,16 +26,16 @@ export default function TravelTourList({ tours, loading }) {
           },
         }}
       >
-        {(loading ? [...Array(12)] : tours).map((tour, index) =>
+        {(loading ? [...Array(12)] : properties).map((tour, index) =>
           tour ? (
-            <TravelTourItem key={tour.id} tour={tour} />
+            <TravelTourItem key={tour.id} property={tour} />
           ) : (
             <TravelTourItemSkeleton key={index} />
           )
         )}
       </Box>
 
-      <Pagination
+      {/* <Pagination
         count={10}
         color="primary"
         sx={{
@@ -41,7 +44,7 @@ export default function TravelTourList({ tours, loading }) {
             justifyContent: 'center',
           },
         }}
-      />
+      /> */}
     </>
   );
 }

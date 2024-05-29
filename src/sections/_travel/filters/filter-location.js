@@ -25,7 +25,7 @@ export default function FilterLocation() {
               <Iconify width={24} icon="carbon:location" sx={{ color: 'text.disabled', mr: 1 }} />
             </InputAdornment>
           }
-          sx={{ height: 44, typography: 'subtitle1', color: 'white' }}
+          sx={{ height: 44, typography: 'subtitle1', color: 'inherit' }}
         />
       )}
       renderOption={(props, option) => {

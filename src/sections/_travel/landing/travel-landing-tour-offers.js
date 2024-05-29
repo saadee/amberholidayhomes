@@ -52,7 +52,7 @@ export default function TravelLandingTourOffers() {
       <Box sx={{ textAlign: 'center' }}>
         <Button
           component={RouterLink}
-          href={paths.travel.tours}
+          href={paths.listings}
           size="large"
           variant="outlined"
           color="inherit"

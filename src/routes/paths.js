@@ -99,8 +99,10 @@ export const paths = {
     player: '/components/player',
     textMaxLine: '/components/text-max-line',
   },
+
   // Others
   pages: '/pages',
+  listings: '/listing',
   docs: 'https://zone-docs.vercel.app',
   license: 'https://material-ui.com/store/license/#i-standard-license',
   minimalStore: 'https://material-ui.com/store/items/minimal-dashboard',

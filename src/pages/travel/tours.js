@@ -8,7 +8,7 @@ export default function TravelToursPage() {
   return (
     <>
       <Helmet>
-        <title>Tours</title>
+        <title>Filter Listing</title>
       </Helmet>
 
       <TravelToursView />
