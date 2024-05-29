@@ -71,7 +71,7 @@ export default function PropertyAreas({ members }) {
           mb: { xs: 8, md: 10 },
         }}
       >
-        <Typography variant="h3" color="primary">
+        <Typography variant="h3" color="secondary">
           Discover Best
         </Typography>
         <Typography variant="h3">

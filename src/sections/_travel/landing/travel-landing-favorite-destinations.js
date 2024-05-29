@@ -8,7 +8,6 @@ import Typography from '@mui/material/Typography';
 import { alpha, useTheme } from '@mui/material/styles';
 
 import Image from 'src/components/image';
-import TextMaxLine from 'src/components/text-max-line';
 import { useResponsive } from 'src/hooks/use-responsive';
 
 import oneBr from '../../../assets/propertyType/1br.jpg';
@@ -53,11 +52,11 @@ export default function TravelLandingFavoriteDestinations({ tours }) {
         justifyContent={{ md: 'space-between' }}
       >
         <Grid xs={12} md={3}>
-          <Typography variant="h3" color="primary">
+          <Typography variant="h3" color="secondary">
             Choose Your
           </Typography>
 
-          <Typography variant="h1" sx={{ my: 3 }}>
+          <Typography variant="h2" sx={{ my: 1 }}>
             Residential Properties in Dubai
           </Typography>
         </Grid>
@@ -126,9 +125,9 @@ function DestinationItem({ tour, order }) {
           position: 'absolute',
         }}
       >
-        <TextMaxLine variant="h4" line={1}>
+        <Typography variant="h3" line={1}>
           {title}
-        </TextMaxLine>
+        </Typography>
       </Stack>
     </Box>
   );

@@ -8,11 +8,6 @@ import { authRoutes } from './auth';
 import { errorRoutes } from './error';
 import { commonRoutes } from './common';
 import { travelRoutes } from './travel';
-import { careerRoutes } from './career';
-import { marketingRoutes } from './marketing';
-import { eLearningRoutes } from './elearning';
-import { eCommerceRoutes } from './ecommerce';
-import { componentsRoutes } from './components';
 
 // ----------------------------------------------------------------------
 
@@ -33,17 +28,17 @@ export default function Router() {
         { element: <IndexPage />, index: true },
         { path: 'support', element: <SupportPage /> },
 
-        ...marketingRoutes,
+        // ...marketingRoutes,
 
         ...travelRoutes,
 
-        ...careerRoutes,
+        // ...careerRoutes,
 
-        ...eLearningRoutes,
+        // ...eLearningRoutes,
 
-        ...eCommerceRoutes,
+        // ...eCommerceRoutes,
 
-        ...componentsRoutes,
+        // ...componentsRoutes,
       ],
     },
 

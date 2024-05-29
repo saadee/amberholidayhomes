@@ -137,7 +137,7 @@ function CarouselItem({ tour }) {
   return (
     <Box>
       <Stack spacing={1} mb={3} sx={{ textAlign: 'center' }}>
-        <Typography variant="h3" color='primary'>Featured</Typography>
+        <Typography variant="h3" color='secondary'>Featured</Typography>
         <Typography variant="h2">Residential Properties in Dubai</Typography>
       </Stack>
       <Box
@@ -181,34 +181,34 @@ function CarouselItem({ tour }) {
             sx={{ my: 5 }}
           >
             <Stack direction="row" alignItems="center" sx={{ typography: 'h6' }}>
-              <Iconify icon="carbon:location" width={24} sx={{ mr: 1, color: 'primary.main' }} />
+              <Iconify icon="carbon:location" width={24} sx={{ mr: 1, color: 'secondary.main' }} />
               {tour.area}
             </Stack>
 
             <Stack direction="row" alignItems="center" sx={{ typography: 'h6' }}>
-              <Iconify icon="mdi:users" width={24} sx={{ mr: 1, color: 'primary.main' }} />
+              <Iconify icon="mdi:users" width={24} sx={{ mr: 1, color: 'secondary.main' }} />
               {tour.guests}
             </Stack>
             <Stack direction="row" alignItems="center" sx={{ typography: 'h6' }}>
               <Iconify
                 icon="material-symbols:bed"
                 width={24}
-                sx={{ mr: 1, color: 'primary.main' }}
+                sx={{ mr: 1, color: 'secondary.main' }}
               />
               {tour.beds?.length}
             </Stack>
             <Stack direction="row" alignItems="center" sx={{ typography: 'h6' }}>
-              <Iconify icon="solar:bath-bold" width={24} sx={{ mr: 1, color: 'primary.main' }} />
+              <Iconify icon="solar:bath-bold" width={24} sx={{ mr: 1, color: 'secondary.main' }} />
               {tour.bath}
             </Stack>
 
             <Stack direction="row" alignItems="center" sx={{ typography: 'h6' }}>
-              <Iconify icon="carbon:currency" width={24} sx={{ mr: 1, color: 'primary.main' }} />
+              <Iconify icon="carbon:currency" width={24} sx={{ mr: 1, color: 'secondary.main' }} />
               {`Starting at ${fCurrency(tour.rentPerNight)}`}
             </Stack>
           </Stack>
 
-          <Button variant="contained" size="large" color="primary">
+          <Button variant="contained" size="large" color="secondary">
             Book Now
           </Button>
         </Stack>
@@ -275,7 +275,7 @@ function ThumbnailItem({ tour, selected }) {
         </TextMaxLine>
 
         <Stack direction="row" alignItems="center">
-          <Iconify icon="carbon:location" sx={{ mr: 1, color: 'primary.main' }} />
+          <Iconify icon="carbon:location" sx={{ mr: 1, color: 'secondary.main' }} />
           <TextMaxLine variant="caption" line={1} sx={{ opacity: 0.48 }}>
             {tour.area}
           </TextMaxLine>

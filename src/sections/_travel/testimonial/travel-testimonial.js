@@ -20,7 +20,7 @@ export default function EcommerceTestimonial({ testimonials }) {
 
   const carousel = useCarousel({
     dots: !mdUp,
-    slidesToShow: 4,
+    slidesToShow: 3,
     slidesToScroll: 1,
     ...CarouselDots({
       sx: {
@@ -49,21 +49,12 @@ export default function EcommerceTestimonial({ testimonials }) {
       }}
     >
       <Stack alignItems="center" sx={{ mb: 8 }}>
-        <Typography variant="h3" color="primary">
+        <Typography variant="h3" color="secondary">
           Testimonials
         </Typography>
         <Typography variant="h2" sx={{ textAlign: { xs: 'center', md: 'unset' }, flexGrow: 1 }}>
           What Our Customer Say About Us
         </Typography>
-
-        {mdUp && (
-          <CarouselArrows
-            spacing={2}
-            justifyContent="center"
-            onNext={carousel.onNext}
-            onPrev={carousel.onPrev}
-          />
-        )}
       </Stack>
 
       <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
@@ -73,6 +64,16 @@ export default function EcommerceTestimonial({ testimonials }) {
           </Box>
         ))}
       </Carousel>
+      <Box sx={{ my: 2, textAlign: 'center' }}>
+        {mdUp && (
+          <CarouselArrows
+            spacing={2}
+            justifyContent="center"
+            onNext={carousel.onNext}
+            onPrev={carousel.onPrev}
+          />
+        )}
+      </Box>
     </Container>
   );
 }

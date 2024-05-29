@@ -52,7 +52,7 @@ export default function TravelFilters({ sx, ...other }) {
       spacing={2.5}
       alignItems={{ md: 'center' }}
       direction={{ xs: 'column', md: 'row' }}
-      sx={{ p: 4, borderRadius: 2, bgcolor: 'background.neutral', ...sx }}
+      sx={{ p: 2, borderRadius: 2, bgcolor: 'background.neutral', ...sx }}
       {...other}
     >
       <FilterLocation />

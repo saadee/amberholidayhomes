@@ -5,14 +5,14 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import { useTheme } from '@mui/material/styles';
 import Container from '@mui/material/Container';
+import { useTheme } from '@mui/material/styles';
 
 import { bgBlur } from 'src/theme/css';
 import Logo from 'src/components/logo';
 import { paths } from 'src/routes/paths';
-import { useOffSetTop } from 'src/hooks/use-off-set-top';
 import { useResponsive } from 'src/hooks/use-responsive';
+import { useOffSetTop } from 'src/hooks/use-off-set-top';
 
 import { HEADER } from '../config-layout';
 import HeaderShadow from '../common/header-shadow';
@@ -59,7 +59,7 @@ export default function Header({ headerOnDark }) {
           sx={{ height: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
         >
           <Box sx={{ lineHeight: 0, position: 'relative' }}>
-            <Logo />
+            <Logo sx={{ maxWidth: 130 }} />
 
             {/* <Link href="https://zone-docs.vercel.app/changelog" target="_blank" rel="noopener">
               <Label

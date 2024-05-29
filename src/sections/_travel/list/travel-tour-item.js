@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
-import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import { Chip } from '@mui/material';
@@ -10,8 +9,8 @@ import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 
-import Image from 'src/components/image';
 import { paths } from 'src/routes/paths';
+import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
 import { RouterLink } from 'src/routes/components';
 import { fCurrency } from 'src/utils/format-number';
@@ -22,15 +21,8 @@ import TextMaxLine from 'src/components/text-max-line';
 export default function TravelTourItem({ property }) {
   const {
     slug,
-    location,
-    price,
-    priceSale,
-    favorited,
-    duration,
-    ratingNumber,
     images,
     title,
-    area,
     discountRatio,
     beds,
     bath,
@@ -41,11 +33,8 @@ export default function TravelTourItem({ property }) {
 
   // console.log({ property });
 
-  const [favorite, setFavorite] = useState(favorited);
+  // const [favorite, setFavorite] = useState(favorited);
 
-  const handleChangeFavorite = useCallback((event) => {
-    setFavorite(event.target.checked);
-  }, []);
 
   function deductPercentage(amount, percentage) {
     // Calculate the deduction

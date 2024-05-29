@@ -16,7 +16,6 @@ import TextMaxLine from 'src/components/text-max-line';
 // ----------------------------------------------------------------------
 
 export default function TravelLandingListWithUs({ tours }) {
-
   return (
     <Container
       sx={{
@@ -33,7 +32,7 @@ export default function TravelLandingListWithUs({ tours }) {
         }}
       >
         <Box mb={3} sx={{ textAlign: 'center', width: '100%' }}>
-          <Typography variant="h3" color="primary" align="center">
+          <Typography variant="h3" color="secondary" align="center">
             List With Us
           </Typography>
           <Typography variant="h2" align="center">
@@ -44,7 +43,7 @@ export default function TravelLandingListWithUs({ tours }) {
 
       <Box
         sx={{
-          my:10,
+          my: 10,
           gap: 2,
           display: 'grid',
           // alignItems: 'center',
@@ -55,37 +54,52 @@ export default function TravelLandingListWithUs({ tours }) {
           },
         }}
       >
-        <Box >
+        <Box>
           <Stack spacing={3}>
             <Iconify icon="fa:repeat" width={40} sx={{ m: 'auto' }} />
             <Typography variant="h3" align="center">
               High Occupancy
             </Typography>
-            <Typography variant="body1" color="text.secondary" align="center" sx={{lineHeight:2}}>
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              align="center"
+              sx={{ lineHeight: 2 }}
+            >
               Maximize your property&apos;s potential with our expertise in achieving consistently
               high occupancy rates for your vacation home.
             </Typography>
           </Stack>
         </Box>
-        <Box >
+        <Box>
           <Stack spacing={3}>
             <Iconify icon="streamline:graph-bar-increase-solid" width={40} sx={{ m: 'auto' }} />
-            <Typography variant="h3" align="center" sx={{lineHeight:1.2}}>
+            <Typography variant="h3" align="center" sx={{ lineHeight: 1.2 }}>
               Personalized Guest Experience
             </Typography>
-            <Typography variant="body1" color="text.secondary" align="center" sx={{lineHeight:2}}>
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              align="center"
+              sx={{ lineHeight: 2 }}
+            >
               Elevate guest satisfaction with our dedicated approach, ensuring each guest enjoys a
               personalized and memorable stay tailored to their preferences
             </Typography>
           </Stack>
         </Box>
-        <Box >
+        <Box>
           <Stack spacing={3}>
             <Iconify icon="dashicons:money-alt" width={50} sx={{ m: 'auto' }} />
             <Typography variant="h3" align="center">
               Full Transparency
             </Typography>
-            <Typography variant="body1" color="text.secondary" align="center" sx={{lineHeight:2}}>
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              align="center"
+              sx={{ lineHeight: 2 }}
+            >
               With our state of the art owners portal experience peace of mind with our commitment
               to full transparency, providing clear and comprehensive information about bookings,
               our services, fees, and property management processes.

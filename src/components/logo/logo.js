@@ -10,7 +10,7 @@ import { RouterLink } from 'src/routes/components';
 
 // ----------------------------------------------------------------------
 
-function Logo({ single = false, sx }) {
+function Logo({ single = false, ...other }) {
   // const theme = useTheme();
 
   // const PRIMARY_MAIN = theme.palette.primary.main;
@@ -55,7 +55,7 @@ function Logo({ single = false, sx }) {
       aria-label="go to homepage"
       sx={{ lineHeight: 0 }}
     >
-      <Box sx={{ maxWidth: 130 }}>
+      <Box {...other}>
         <img
           src={Amberlogo}
           alt="logo"

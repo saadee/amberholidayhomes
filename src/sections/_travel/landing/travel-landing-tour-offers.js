@@ -23,7 +23,7 @@ export default function TravelLandingTourOffers() {
       }}
     >
       <Stack spacing={1} sx={{ textAlign: 'center' }}>
-        <Typography variant="h4" color="primary">
+        <Typography variant="h4" color="secondary">
           Special Offers
         </Typography>
 
@@ -43,7 +43,7 @@ export default function TravelLandingTourOffers() {
         }}
       >
         {properties
-          // ?.filter((e) => e?.discountRatio > 0)
+          ?.filter((e) => e?.discountRatio > 0)
           .map((property) => (
             <TravelTourItem key={property.id} property={property} />
           ))}
@@ -57,7 +57,7 @@ export default function TravelLandingTourOffers() {
           variant="outlined"
           color="inherit"
         >
-          View All Tours
+          View All Listings
         </Button>
       </Box>
     </Container>
