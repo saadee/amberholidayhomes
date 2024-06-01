@@ -1,3 +1,4 @@
+import { Timestamp } from 'firebase/firestore';
 import { format, getTime, formatDistanceToNow } from 'date-fns';
 
 // ----------------------------------------------------------------------
@@ -24,4 +25,8 @@ export function fToNow(date) {
         addSuffix: true,
       })
     : '';
+}
+
+export function fDateFormatted(date) {
+  return date instanceof Timestamp ? date.toDate() : date;
 }
