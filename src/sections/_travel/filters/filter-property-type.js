@@ -7,9 +7,10 @@ import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function FilterPropertyType() {
+export default function FilterPropertyType(props) {
   return (
     <Autocomplete
+      {...props}
       sx={{ width: 0.8 }}
       popupIcon={null}
       options={_propertyType}

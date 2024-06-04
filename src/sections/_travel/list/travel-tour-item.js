@@ -19,22 +19,12 @@ import TextMaxLine from 'src/components/text-max-line';
 // ----------------------------------------------------------------------
 
 export default function TravelTourItem({ property }) {
-  const {
-    slug,
-    images,
-    title,
-    discountRatio,
-    beds,
-    bath,
-    guests,
-    rentPerNight,
-    address,
-  } = property;
+  const { slug, images, title, discountRatio, bath, guests, rentPerNight, address, rooms, id } =
+    property;
 
   // console.log({ property });
 
   // const [favorite, setFavorite] = useState(favorited);
-
 
   function deductPercentage(amount, percentage) {
     // Calculate the deduction
@@ -112,7 +102,7 @@ export default function TravelTourItem({ property }) {
           </TextMaxLine>
         </Typography>
 
-        <Link component={RouterLink} href={paths.travel.tour} color="inherit">
+        <Link component={RouterLink} href={paths.listingsView(id)} color="inherit">
           <TextMaxLine variant="h6" persistent>
             {title}
           </TextMaxLine>
@@ -136,7 +126,7 @@ export default function TravelTourItem({ property }) {
           alignItems="center"
           sx={{ typography: 'body2', color: 'text.disabled' }}
         >
-          <Iconify icon="material-symbols:bed" width={25} sx={{ mr: 1 }} /> {beds?.length}
+          <Iconify icon="material-symbols:bed" width={25} sx={{ mr: 1 }} /> {rooms}
         </Stack>
         <Stack
           flexGrow={1}

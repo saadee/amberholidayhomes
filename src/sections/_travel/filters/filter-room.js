@@ -6,12 +6,13 @@ import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function FilterRoom() {
+export default function FilterRoom(props) {
   return (
     <Autocomplete
+      {...props}
       sx={{ width: 0.7 }}
       popupIcon={null}
-      options={[...Array(10)].map((option, i) => i)}
+      options={[...Array(10)].map((option, i) => i + 1)}
       getOptionLabel={(option) => option}
       renderInput={(params) => (
         <InputBase
@@ -22,7 +23,11 @@ export default function FilterRoom() {
           sx={{ height: 44, typography: 'subtitle1', color: 'inherit' }}
           startAdornment={
             <InputAdornment position="start">
-              <Iconify width={24} icon="material-symbols:bed" sx={{ color: 'text.disabled', mr: 1 }} />
+              <Iconify
+                width={24}
+                icon="material-symbols:bed"
+                sx={{ color: 'text.disabled', mr: 1 }}
+              />
             </InputAdornment>
           }
         />

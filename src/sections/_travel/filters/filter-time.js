@@ -10,14 +10,12 @@ import { SingleInputDateRangeField } from '@mui/x-date-pickers-pro/SingleInputDa
 
 // ----------------------------------------------------------------------
 
-export default function FilterTime({ departureDay, onChangeDepartureDay, ...other }) {
+export default function FilterTime({ ...other }) {
   return (
     <DateRangePicker
       format="dd/MM/yyyy"
       label="Check In & Check Out"
       slots={{ field: SingleInputDateRangeField }}
-      value={departureDay}
-      onChange={onChangeDepartureDay}
       disablePast
       // onBlur={onBlur}
       {...other}
@@ -27,6 +25,4 @@ export default function FilterTime({ departureDay, onChangeDepartureDay, ...othe
 
 FilterTime.propTypes = {
   sx: PropTypes.object,
-  onChangeDepartureDay: PropTypes.func,
-  departureDay: PropTypes.instanceOf(Date),
 };

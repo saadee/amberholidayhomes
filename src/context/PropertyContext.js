@@ -19,11 +19,14 @@ export const usePropertyContext = () => useContext(PropertyContext);
 
 export const PropertyProvider = ({ children }) => {
   const isPropertiesLoading = useBoolean();
+  const isListingLoading = useBoolean(true);
 
   // ---------------------------------------------------------------------
   //  Local states
   // ---------------------------------------------------------------------
   const [properties, setProperties] = useState([]);
+  const [filterProperties, setFilterProperties] = useState([]);
+  const [propertyToView, setPropertyToView] = useState({});
 
   //--------------------------------------------------------------------
   // Side Effects
@@ -33,7 +36,7 @@ export const PropertyProvider = ({ children }) => {
     getAllProperties();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
+
   //--------------------------------------------------------------------
   // Callbacks
   //--------------------------------------------------------------------
@@ -68,13 +71,18 @@ export const PropertyProvider = ({ children }) => {
   // --------------------------------------------------------------------
   // Return
   // --------------------------------------------------------------------
-  
+
   const memoizedValue = useMemo(
     () => ({
       properties,
       setProperties,
+      filterProperties,
+      setFilterProperties,
+      isListingLoading,
+      propertyToView,
+      setPropertyToView,
     }),
-    [properties]
+    [properties, filterProperties, isListingLoading, propertyToView]
   );
   return <PropertyContext.Provider value={memoizedValue}>{children}</PropertyContext.Provider>;
 };

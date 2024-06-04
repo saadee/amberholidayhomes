@@ -9,13 +9,13 @@ import TravelTourItemSkeleton from './travel-tour-item-skeleton';
 
 // ----------------------------------------------------------------------
 
-export default function TravelTourList({ tours, loading }) {
-  const { properties } = usePropertyContext();
+export default function TravelTourList({ loading }) {
+  const { filterProperties } = usePropertyContext();
   return (
     <>
       <Box
         sx={{
-          mb:20,
+          mb: 20,
           columnGap: 3,
           display: 'grid',
           rowGap: { xs: 4, md: 5 },
@@ -26,7 +26,7 @@ export default function TravelTourList({ tours, loading }) {
           },
         }}
       >
-        {(loading ? [...Array(12)] : properties).map((tour, index) =>
+        {(loading ? [...Array(12)] : filterProperties).map((tour, index) =>
           tour ? (
             <TravelTourItem key={tour.id} property={tour} />
           ) : (
@@ -51,5 +51,4 @@ export default function TravelTourList({ tours, loading }) {
 
 TravelTourList.propTypes = {
   loading: PropTypes.bool,
-  tours: PropTypes.array,
 };

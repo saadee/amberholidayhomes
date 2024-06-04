@@ -2,14 +2,12 @@ import PropTypes from 'prop-types';
 import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
 import Popover from '@mui/material/Popover';
-import Checkbox from '@mui/material/Checkbox';
 import MenuItem from '@mui/material/MenuItem';
-import IconButton from '@mui/material/IconButton';
+import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
 
 import { _socials } from 'src/_mock';
 import Iconify from 'src/components/iconify';
@@ -18,7 +16,7 @@ import { fShortenNumber } from 'src/utils/format-number';
 // ----------------------------------------------------------------------
 
 export default function TravelTourDetailsHeader({ tour }) {
-  const { slug, ratingNumber, totalReviews, location, favorited, tourGuide } = tour;
+  const { ratingNumber, favorited, title, rooms, bath, guests, propertySize, address } = tour;
 
   const [favorite, setFavorite] = useState(favorited);
 
@@ -37,16 +35,16 @@ export default function TravelTourDetailsHeader({ tour }) {
   }, []);
 
   return (
-    <>
+    <Box my={5}>
       <Stack
         spacing={3}
         direction={{ xs: 'column', md: 'row' }}
         sx={{
-          mb: 3,
+          mb: 1,
         }}
       >
         <Typography variant="h3" component="h1" sx={{ flexGrow: 1, pr: { md: 10 } }}>
-          {slug}
+          {title}
         </Typography>
 
         <Stack direction="row" alignItems="center" flexShrink={0}>
@@ -64,33 +62,36 @@ export default function TravelTourDetailsHeader({ tour }) {
         </Stack>
       </Stack>
 
-      <Stack spacing={3} direction={{ xs: 'column', md: 'row' }}>
+      <Stack spacing={2} direction="row" flexWrap="wrap" alignItems="center">
         <Stack spacing={0.5} direction="row" alignItems="center">
           <Iconify icon="carbon:star-filled" sx={{ color: 'warning.main' }} />
-
           <Box sx={{ typography: 'h6' }}>
             {Number.isInteger(ratingNumber) ? `${ratingNumber}.0` : ratingNumber}
           </Box>
-
-          <Link variant="body2" sx={{ color: 'text.secondary' }}>
-            ({fShortenNumber(totalReviews)} reviews)
-          </Link>
+          ({fShortenNumber(4587)} reviews)
+        </Stack>
+        <Stack direction="row" alignItems="center" spacing={0.5} sx={{ typography: 'body2' }}>
+          <Iconify icon="material-symbols-light:bed-outline" width={26} />
+          <Box component="span" sx={{ typography: 'subtitle1' }}>
+            {rooms} Rooms
+          </Box>
         </Stack>
 
-        <Stack direction="row" alignItems="center" sx={{ typography: 'body2' }}>
-          <Iconify icon="carbon:location" sx={{ mr: 0.5 }} /> {location}
+        <Stack direction="row" alignItems="center" spacing={0.5} sx={{ typography: 'body2' }}>
+          <Iconify icon="solar:bath-bold" />
+          {bath} Bath
         </Stack>
-
-        <Stack direction="row" alignItems="center">
-          <Avatar src={tourGuide?.avatarUrl} sx={{ width: 24, height: 24 }} />
-
-          <Typography variant="body2" sx={{ color: 'text.secondary', mx: 0.5 }}>
-            Tour guide by
-          </Typography>
-
-          <Link variant="subtitle2" color="inherit">
-            {tourGuide?.name}
-          </Link>
+        <Stack direction="row" alignItems="center" spacing={0.5} sx={{ typography: 'body2' }}>
+          <Iconify icon="carbon:area" />
+          {propertySize} sq.ft
+        </Stack>
+        <Stack direction="row" alignItems="center" spacing={0.5} sx={{ typography: 'body2' }}>
+          <Iconify icon="ic:baseline-people" />
+          {guests} Guests
+        </Stack>
+        <Stack direction="row" alignItems="center" spacing={0.5} sx={{ typography: 'body2' }}>
+          <Iconify icon="mingcute:location-fill" sx={{ color: 'error.main' }} />
+          {address}
         </Stack>
       </Stack>
 
@@ -113,20 +114,10 @@ export default function TravelTourDetailsHeader({ tour }) {
           </MenuItem>
         ))}
       </Popover>
-    </>
+    </Box>
   );
 }
 
 TravelTourDetailsHeader.propTypes = {
-  tour: PropTypes.shape({
-    favorited: PropTypes.bool,
-    location: PropTypes.string,
-    slug: PropTypes.string,
-    ratingNumber: PropTypes.number,
-    totalReviews: PropTypes.number,
-    tourGuide: PropTypes.shape({
-      avatarUrl: PropTypes.string,
-      name: PropTypes.string,
-    }),
-  }),
+  tour: PropTypes.object,
 };

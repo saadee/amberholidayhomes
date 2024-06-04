@@ -7,13 +7,15 @@ import { SplashScreen } from 'src/components/loading-screen';
 import { authRoutes } from './auth';
 import { errorRoutes } from './error';
 import { commonRoutes } from './common';
+// import TravelTourPage from 'src/pages/travel/tour';
 
 // ----------------------------------------------------------------------
 
 const IndexPage = lazy(() => import('src/pages/travel/landing'));
 const ToursPage = lazy(() => import('src/pages/travel/tours'));
+const TravelTourPage = lazy(() => import('src/pages/travel/tour'));
 
-const SupportPage = lazy(() => import('src/pages/support'));
+// const SupportPage = lazy(() => import('src/pages/support'));
 
 export default function Router() {
   return useRoutes([
@@ -28,6 +30,7 @@ export default function Router() {
       children: [
         { element: <IndexPage />, index: true },
         { path: 'listing', element: <ToursPage /> },
+        { path: 'listing/:id', element: <TravelTourPage /> },
         // { path: 'support', element: <SupportPage /> },
 
         // ...marketingRoutes,

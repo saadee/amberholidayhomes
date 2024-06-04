@@ -7,9 +7,10 @@ import { propertylocationsAreas } from 'src/_mock';
 
 // ----------------------------------------------------------------------
 
-export default function FilterLocation() {
+export default function FilterLocation(locationProps) {
   return (
     <Autocomplete
+      {...locationProps}
       sx={{ width: 1 }}
       popupIcon={null}
       options={propertylocationsAreas}
