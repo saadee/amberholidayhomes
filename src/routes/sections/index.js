@@ -14,6 +14,8 @@ import { commonRoutes } from './common';
 const IndexPage = lazy(() => import('src/pages/travel/landing'));
 const ToursPage = lazy(() => import('src/pages/travel/tours'));
 const TravelTourPage = lazy(() => import('src/pages/travel/tour'));
+const CheckoutPage = lazy(() => import('src/pages/travel/checkout'));
+
 
 // const SupportPage = lazy(() => import('src/pages/support'));
 
@@ -31,6 +33,7 @@ export default function Router() {
         { element: <IndexPage />, index: true },
         { path: 'listing', element: <ToursPage /> },
         { path: 'listing/:id', element: <TravelTourPage /> },
+        { path: 'checkout', element: <CheckoutPage /> },
         // { path: 'support', element: <SupportPage /> },
 
         // ...marketingRoutes,

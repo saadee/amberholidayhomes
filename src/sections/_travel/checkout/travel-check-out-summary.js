@@ -1,23 +1,18 @@
 import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
 import Link from '@mui/material/Link';
+import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { inputAdornmentClasses } from '@mui/material/InputAdornment';
 
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
-import TextMaxLine from 'src/components/text-max-line';
+import { getNightsFromDates } from 'src/utils/common';
 import { useResponsive } from 'src/hooks/use-responsive';
 import { fCurrency, fShortenNumber } from 'src/utils/format-number';
-
-import FilterTime from '../filters/filter-time';
-import FilterGuests from '../filters/filter-guests';
 
 // ----------------------------------------------------------------------
 
@@ -29,10 +24,14 @@ export default function TravelCheckOutSummary({
   onDecreaseGuests,
   onIncrementGuests,
   onChangeDepartureDay,
+  propertyToView,
 }) {
   const smUp = useResponsive('up', 'sm');
 
   const { coverUrl, slug, ratingNumber, totalReviews, price, tourGuide } = tour;
+  const { images, title, rentPerNight } = propertyToView;
+
+  const totalAmount = fCurrency(getNightsFromDates(departureDay) * rentPerNight);
 
   return (
     <Card>
@@ -50,12 +49,12 @@ export default function TravelCheckOutSummary({
           },
         }}
       >
-        <Image alt={slug} src={coverUrl} ratio="1/1" sx={{ borderRadius: 2 }} />
+        <Image alt={title} src={images[0]} ratio="1/1" sx={{ borderRadius: 2 }} />
 
         <Stack>
-          <TextMaxLine variant="h5" sx={{ mb: 2 }}>
-            {slug}
-          </TextMaxLine>
+          <Typography variant="h5" sx={{ mb: 2 }}>
+            {title}
+          </Typography>
 
           <Stack spacing={0.5} direction="row" alignItems="center">
             <Iconify icon="carbon:star-filled" sx={{ color: 'warning.main' }} />
@@ -73,17 +72,11 @@ export default function TravelCheckOutSummary({
 
           <Divider sx={{ borderStyle: 'dashed', my: 2.5 }} />
 
-          <Stack direction="row" alignItems="center" spacing={1.5}>
-            <Avatar src={tourGuide.avatarUrl} />
-
-            <div>
-              <Typography variant="body2" sx={{ color: 'text.disabled' }}>
-                Tour guide by
-              </Typography>
-
-              <Typography variant="subtitle2">{tourGuide.name}</Typography>
-            </div>
-          </Stack>
+          {/* <Stack direction="row" alignItems="center" spacing={1.5}>
+           <Typography variant='body1'>bath</Typography>
+           <Typography variant='body1'>bath</Typography>
+           <Typography variant='body1'>bath</Typography>
+          </Stack> */}
         </Stack>
       </Box>
 
@@ -98,46 +91,30 @@ export default function TravelCheckOutSummary({
             bgcolor: 'background.neutral',
           }}
         >
-          <Stack direction="row" spacing={1.5} sx={{ width: 1 }}>
+          <Stack direction="row" spacing={1.5} sx={{ width: 0.6 }}>
             <Iconify icon="carbon:events" width={24} />
 
             <Stack spacing={0.5}>
-              <Typography variant="caption">Departure day</Typography>
-
-              <FilterGuests
-                startAdornment={null}
-                guests={guests}
-                onDecreaseGuests={onDecreaseGuests}
-                onIncrementGuests={onIncrementGuests}
-                sx={{ height: 'unset', color: 'text.primary' }}
-              />
+              <Typography variant="caption">Guests</Typography>
+              <Typography variant="body" color="text.primary">
+                4
+              </Typography>
             </Stack>
           </Stack>
 
-          {smUp && <Divider flexItem orientation="vertical" sx={{ borderStyle: 'dashed' }} />}
+          <Divider flexItem sx={{ borderStyle: 'dashed' }} />
 
           <Stack direction="row" spacing={1.5} sx={{ width: 1 }}>
             <Iconify icon="carbon:calendar" width={24} />
 
             <Stack spacing={0.5}>
-              <Typography variant="caption">Guests</Typography>
-
-              <FilterTime
-                departureDay={departureDay}
-                onChangeDepartureDay={onChangeDepartureDay}
-                sx={{
-                  height: 'unset',
-                  color: 'text.primary',
-                  [`& .${inputAdornmentClasses.root}`]: {
-                    display: 'none',
-                  },
-                }}
-              />
+              <Typography variant="caption">Check In & Check Out</Typography>
+              <Typography variant="body" color="text.primary" />
             </Stack>
           </Stack>
         </Stack>
 
-        <Stack
+        {/* <Stack
           spacing={1}
           direction="row"
           alignItems="center"
@@ -155,7 +132,7 @@ export default function TravelCheckOutSummary({
             Discount
           </Typography>
           <Typography variant="body2">-</Typography>
-        </Stack>
+        </Stack> */}
       </Stack>
 
       <Divider sx={{ borderStyle: 'dashed' }} />
@@ -163,7 +140,7 @@ export default function TravelCheckOutSummary({
       <Stack spacing={3} sx={{ p: 3 }}>
         <Stack spacing={1} direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="h5">Total</Typography>
-          <Typography variant="h5">{fCurrency(price)}</Typography>
+          <Typography variant="h5">{}</Typography>
         </Stack>
 
         <LoadingButton
@@ -190,6 +167,7 @@ TravelCheckOutSummary.propTypes = {
     adults: PropTypes.number,
     children: PropTypes.number,
   }),
+  propertyToView: PropTypes.object,
   tour: PropTypes.shape({
     slug: PropTypes.string,
     price: PropTypes.number,

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import { Chip } from '@mui/material';
 import Card from '@mui/material/Card';
-import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
@@ -12,16 +11,18 @@ import Typography from '@mui/material/Typography';
 import { paths } from 'src/routes/paths';
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
-import { RouterLink } from 'src/routes/components';
+import { useRouter } from 'src/routes/hooks';
 import { fCurrency } from 'src/utils/format-number';
 import TextMaxLine from 'src/components/text-max-line';
+import { usePropertyContext } from 'src/context/PropertyContext';
 
 // ----------------------------------------------------------------------
 
 export default function TravelTourItem({ property }) {
-  const { slug, images, title, discountRatio, bath, guests, rentPerNight, address, rooms, id } =
+  const { slug, images, title, discountRatio, bath, guests, rentPerNight, address, rooms, id,propertyType } =
     property;
-
+  const router = useRouter();
+  const { setPropertyToView } = usePropertyContext();
   // console.log({ property });
 
   // const [favorite, setFavorite] = useState(favorited);
@@ -81,7 +82,7 @@ export default function TravelTourItem({ property }) {
             fCurrency(rentPerNight)
           )}
         </Stack>
-        {discountRatio && <Chip label={`${discountRatio}% OFF`} color="secondary" />}
+        {discountRatio > 0 && <Chip label={`${discountRatio}% OFF`} color="secondary" />}
 
         {/* <Checkbox
           color="error"
@@ -102,16 +103,35 @@ export default function TravelTourItem({ property }) {
           </TextMaxLine>
         </Typography>
 
-        <Link component={RouterLink} href={paths.listingsView(id)} color="inherit">
+        <Box
+          sx={{
+            cursor: 'pointer',
+            ':hover': {
+              textDecoration: 'underline',
+            },
+          }}
+          onClick={() => {
+            setPropertyToView(property);
+            router.push(paths.listingsView(id));
+          }}
+        >
           <TextMaxLine variant="h6" persistent>
             {title}
           </TextMaxLine>
-        </Link>
+        </Box>
       </Stack>
 
       <Divider sx={{ borderStyle: 'dashed' }} />
 
       <Stack direction="row" alignItems="center" sx={{ p: 2.5 }}>
+        <Stack
+          flexGrow={1}
+          direction="row"
+          alignItems="center"
+          sx={{ typography: 'body2', color: 'text.disabled' }}
+        >
+          <Iconify icon="mdi:users" width={25} sx={{ mr: 1 }} /> {propertyType}
+        </Stack>
         <Stack
           flexGrow={1}
           direction="row"

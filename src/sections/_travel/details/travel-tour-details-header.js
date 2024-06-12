@@ -70,25 +70,7 @@ export default function TravelTourDetailsHeader({ tour }) {
           </Box>
           ({fShortenNumber(4587)} reviews)
         </Stack>
-        <Stack direction="row" alignItems="center" spacing={0.5} sx={{ typography: 'body2' }}>
-          <Iconify icon="material-symbols-light:bed-outline" width={26} />
-          <Box component="span" sx={{ typography: 'subtitle1' }}>
-            {rooms} Rooms
-          </Box>
-        </Stack>
 
-        <Stack direction="row" alignItems="center" spacing={0.5} sx={{ typography: 'body2' }}>
-          <Iconify icon="solar:bath-bold" />
-          {bath} Bath
-        </Stack>
-        <Stack direction="row" alignItems="center" spacing={0.5} sx={{ typography: 'body2' }}>
-          <Iconify icon="carbon:area" />
-          {propertySize} sq.ft
-        </Stack>
-        <Stack direction="row" alignItems="center" spacing={0.5} sx={{ typography: 'body2' }}>
-          <Iconify icon="ic:baseline-people" />
-          {guests} Guests
-        </Stack>
         <Stack direction="row" alignItems="center" spacing={0.5} sx={{ typography: 'body2' }}>
           <Iconify icon="mingcute:location-fill" sx={{ color: 'error.main' }} />
           {address}

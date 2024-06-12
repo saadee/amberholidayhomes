@@ -6,28 +6,20 @@ import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 
 import Iconify from 'src/components/iconify';
-import { fDate } from 'src/utils/format-time';
-import { TOUR_SERVICE_OPTIONS } from 'src/_mock';
+import { fDateTime } from 'src/utils/format-time';
+import { _features, TERMS_AND_CONDITIONS_OPTIONS } from 'src/_mock';
 
 // ----------------------------------------------------------------------
 
-export default function TravelTourDetailsSummary({ tour }) {
-  const {
-    program,
-    services,
-    location,
-    duration,
-    tourGuide,
-    languages,
-    highlights,
-    description,
-    available,
-  } = tour;
+export default function TravelTourDetailsSummary({ propertyToView }) {
+  const { features, termsAndCondition, childrenAllowed, content, time } = propertyToView;
+
+  const { checkInHour, checkOutHour } = time;
 
   return (
     <Stack spacing={5}>
       <Stack spacing={3}>
-        <Typography variant="h5">Tour Overview</Typography>
+        <Typography variant="h5">Check In Details</Typography>
         <Box
           sx={{
             rowGap: 2.5,
@@ -39,38 +31,36 @@ export default function TravelTourDetailsSummary({ tour }) {
             },
           }}
         >
+          {checkInHour && (
+            <OverviewItem
+              icon="carbon:time"
+              label="Check In"
+              text={fDateTime(checkInHour.toDate(), 'p')}
+            />
+          )}
+          {checkInHour && (
+            <OverviewItem
+              icon="carbon:time"
+              label="Check Out"
+              text={fDateTime(checkOutHour.toDate(), 'p')}
+            />
+          )}
           <OverviewItem
-            icon="carbon:calendar"
-            label="Available"
-            text={`${fDate(available.start, 'dd/MM/yyyy')} - ${fDate(available.end, 'dd/MM/yyyy')}`}
+            label="Late Check-in"
+            text="Please note that our standard check-in time is 3:00 pm and check-out time is 12:00 pm. Early check-ins and late check-outs are subject to availability and additional charges may apply!"
           />
-          <OverviewItem icon="carbon:user" label="Contact name" text={tourGuide?.name} />
-          <OverviewItem icon="carbon:location" label="Location" text={location} />
-          <OverviewItem
-            icon="carbon:mobile"
-            label="Contact phone"
-            text={tourGuide?.phoneNumber || ''}
-          />
-          <OverviewItem icon="carbon:time" label="Durations" text={duration} />
-          <OverviewItem icon="carbon:translate" label="Languages" text={languages.join(', ')} />
+          <OverviewItem label="Cancellation" text="Non-Refundable" />
         </Box>
       </Stack>
+
+      {/* {renderDetails} */}
 
       <Divider sx={{ borderStyle: 'dashed' }} />
 
       <Stack spacing={2}>
-        <Typography variant="h5">Tour Description</Typography>
-        <Typography>{description}</Typography>
-      </Stack>
-
-      <Stack spacing={2}>
-        <Typography variant="h5">Tour Highlights</Typography>
-
-        <ul>
-          {highlights.map((highlight) => (
-            <li key={highlight}>{highlight}</li>
-          ))}
-        </ul>
+        <Typography variant="h3">Description</Typography>
+        <Box dangerouslySetInnerHTML={{ __html: content }} />
+        {/* <Box dangerouslySetHTML={content} /> */}
       </Stack>
 
       <Stack spacing={2}>
@@ -84,14 +74,14 @@ export default function TravelTourDetailsSummary({ tour }) {
             md: 'repeat(2, 1fr)',
           }}
         >
-          {TOUR_SERVICE_OPTIONS.map((service) => (
+          {_features.map((service) => (
             <Stack
-              key={service.label}
+              key={service}
               spacing={1}
               direction="row"
               alignItems="center"
               sx={{
-                ...(services.includes(service.label) && {
+                ...(!features.includes(service) && {
                   color: 'text.disabled',
                 }),
               }}
@@ -100,45 +90,74 @@ export default function TravelTourDetailsSummary({ tour }) {
                 icon="carbon:checkmark"
                 sx={{
                   color: 'primary.main',
-                  ...(services.includes(service.label) && {
+                  ...(!features.includes(service) && {
                     color: 'text.disabled',
                   }),
                 }}
               />
-              {service.label}
+              {service}
             </Stack>
           ))}
         </Box>
       </Stack>
 
-      <Stack spacing={2}>
-        <Typography variant="h5">Tour Program</Typography>
-        {program.map((content) => (
-          <HighlightItem key={content.label} label={content.label} text={content.text} />
-        ))}
+      <Stack spacing={2} mt={6}>
+        <Typography variant="h6"> Terms & Conditions</Typography>
+
+        <Box
+          rowGap={2}
+          display="grid"
+          gridTemplateColumns={{
+            xs: 'repeat(1, 1fr)',
+            md: 'repeat(2, 1fr)',
+          }}
+        >
+          {TERMS_AND_CONDITIONS_OPTIONS.map((terms) => (
+            <Stack key={terms.label} spacing={1} direction="row" alignItems="center">
+              {termsAndCondition?.includes(terms.label) ? (
+                <Iconify
+                  icon="icon-park-outline:check-one"
+                  sx={{
+                    color: 'primary.main',
+                  }}
+                />
+              ) : (
+                <Iconify
+                  icon="material-symbols:block"
+                  sx={{
+                    color: 'error.main',
+                  }}
+                />
+              )}
+              {terms.label}
+            </Stack>
+          ))}
+          <Stack spacing={1} direction="row" alignItems="center">
+            {childrenAllowed ? (
+              <Iconify
+                icon="icon-park-outline:check-one"
+                sx={{
+                  color: 'success.main',
+                }}
+              />
+            ) : (
+              <Iconify
+                icon="material-symbols:block"
+                sx={{
+                  color: 'error.main',
+                }}
+              />
+            )}
+            Children Allowed
+          </Stack>
+        </Box>
       </Stack>
     </Stack>
   );
 }
 
 TravelTourDetailsSummary.propTypes = {
-  tour: PropTypes.shape({
-    program: PropTypes.array,
-    services: PropTypes.array,
-    duration: PropTypes.string,
-    languages: PropTypes.array,
-    location: PropTypes.string,
-    highlights: PropTypes.array,
-    description: PropTypes.string,
-    tourGuide: PropTypes.shape({
-      name: PropTypes.string,
-      phoneNumber: PropTypes.string,
-    }),
-    available: PropTypes.shape({
-      end: PropTypes.instanceOf(Date),
-      start: PropTypes.instanceOf(Date),
-    }),
-  }),
+  propertyToView: PropTypes.object,
 };
 
 // ----------------------------------------------------------------------

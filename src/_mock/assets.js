@@ -544,3 +544,31 @@ export const _descriptions = [
   `Ipsam aliquam velit nobis repellendus officiis aut deserunt id et. Nihil sunt aut dolores aut. Dolores est ipsa quia et laborum quidem laborum accusamus id. Facilis odit quod hic laudantium saepe omnis nisi in sint. Sed cupiditate possimus id.`,
   `Magnam non eveniet optio optio ut aliquid atque. Velit libero aspernatur quis laborum consequatur laudantium. Tempora facere optio fugit accusantium ut. Omnis aspernatur reprehenderit autem esse ut ut enim voluptatibus.`,
 ];
+
+export const _features = [
+  'City Skyline View',
+  'Public Beach Access',
+  'Hair Dryer',
+  'Room-Darkening Shades',
+  'Cleaning products',
+  'Iron',
+  'Shampoo',
+  'Conditioner',
+  'Drying Rack for Clothing',
+  'Body Soap',
+  'Clothing Storage: Wardrobe',
+  'Outdoor Shower',
+  'Excersise Equipment',
+  'Hot Water',
+  'Books & Reading Material',
+  'Washer ~ In unit',
+  'Dryer - In Unit',
+  'Towels, Bed Sheets, Soap, and Toilet Paper',
+  ' Security Cameras',
+  'Hangers',
+];
+export const TERMS_AND_CONDITIONS_OPTIONS = [
+  { value: 'Smoking Allowed', label: 'Smoking Allowed' },
+  { value: 'Party Allowed', label: 'Party Allowed' },
+  { value: 'Pets Allowed', label: 'Pets Allowed' },
+];

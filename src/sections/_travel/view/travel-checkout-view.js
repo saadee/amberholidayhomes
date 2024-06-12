@@ -16,6 +16,7 @@ import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 import { useBoolean } from 'src/hooks/use-boolean';
 import FormProvider from 'src/components/hook-form';
+import { usePropertyContext } from 'src/context/PropertyContext';
 
 import TravelCheckOutSummary from '../checkout/travel-check-out-summary';
 import TravelCheckOutPaymentForm from '../checkout/travel-check-out-payment-form';
@@ -25,7 +26,7 @@ import TravelCheckOutShippingForm from '../checkout/travel-check-out-shipping-fo
 
 export default function TravelCheckoutView() {
   const router = useRouter();
-
+  const { propertyToView } = usePropertyContext();
   const sameBilling = useBoolean();
 
   const [departureDay, setDepartureDay] = useState(new Date());
@@ -148,6 +149,7 @@ export default function TravelCheckoutView() {
 
           <Grid xs={12} md={5}>
             <TravelCheckOutSummary
+              propertyToView={propertyToView}
               guests={guests}
               tour={_tours[0]}
               departureDay={departureDay}

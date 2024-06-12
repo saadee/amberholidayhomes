@@ -1,36 +1,30 @@
 /* eslint-disable no-shadow */
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { where, query, getDocs, collection } from 'firebase/firestore';
 
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 
+import { _propertyType } from 'src/_mock';
 import { DB } from 'src/context/AuthContext';
 import { usePropertyContext } from 'src/context/PropertyContext';
 
+import FilterBath from './filter-bath';
 import FilterRoom from './filter-room';
 import FilterTime from './filter-time';
-import FilterBath from './filter-bath';
-import FilterGuest from './filter-guest';
+import FilterGuests from './filter-guests';
 import FilterLocation from './filter-location';
 import FilterPropertyType from './filter-property-type';
 
 // ----------------------------------------------------------------------
 
 export default function TravelListingFilters({ sx, ...other }) {
-  const { setFilterProperties, properties, isListingLoading } = usePropertyContext();
-
-  const [filters, setFilters] = useState({
-    bath: null,
-    rooms: null,
-    propertyType: null,
-    location: null,
-    guests: null,
-    dates: [null, null],
-  });
+  const { setFilterProperties, properties, isListingLoading, filters, setFilters } =
+    usePropertyContext();
 
   const { bath, rooms, propertyType, location, dates, guests } = filters;
+
   const checkInDate = dates?.[0]
     ? new Date(dates?.[0]).setHours(15, 0, 0, 0) // 3pm Noon
     : null;
@@ -93,12 +87,64 @@ export default function TravelListingFilters({ sx, ...other }) {
 
   const filterOutBasedonSpecs = ({ propertiesToDisplay, filters }) => {
     const { bath, rooms, location, propertyType, guests } = filters;
+
+    const childGuests = guests?.children;
+    const adultGuests = guests?.adults;
+
+    const totalGuests = guests.adults + guests.children;
+    console.log('totalGuests', totalGuests);
+
     if (bath) propertiesToDisplay = propertiesToDisplay?.filter((e) => e?.bath >= bath);
     if (rooms) propertiesToDisplay = propertiesToDisplay?.filter((e) => e?.rooms >= rooms);
     if (location) propertiesToDisplay = propertiesToDisplay?.filter((e) => e?.area === location);
-    if (guests) propertiesToDisplay = propertiesToDisplay?.filter((e) => e?.guests >= guests);
+
+    // if (adultGuests)
+    // propertiesToDisplay = propertiesToDisplay?.filter((e) => e?.guests >= totalGuests);
     if (propertyType)
       propertiesToDisplay = propertiesToDisplay?.filter((e) => e?.propertyType === propertyType);
+
+    if (childGuests) {
+      // eslint-disable-next-line consistent-return, array-callback-return
+      propertiesToDisplay = propertiesToDisplay?.filter((e) => {
+        if (adultGuests <= 2 && totalGuests <= 2)
+          return (
+            e?.propertyType === _propertyType[0] || // 1 BR
+            e?.propertyType === _propertyType[1] || // 2 BR
+            e?.propertyType === _propertyType[2] || // 3 BR
+            e?.propertyType === _propertyType[3] || // 4 BR
+            e?.propertyType === _propertyType[4] || // Villa
+            e?.propertyType === _propertyType[5] // Studio only
+          );
+
+        if (childGuests <= 1 && adultGuests <= 2 && totalGuests <= 3)
+          return (
+            e?.propertyType === _propertyType[0] || // 1 BR
+            e?.propertyType === _propertyType[1] || // 2 BR
+            e?.propertyType === _propertyType[2] // 3 BR
+          );
+
+        if (childGuests <= 2 && adultGuests <= 4 && totalGuests <= 6)
+          return (
+            e?.propertyType === _propertyType[1] || // 2 BR
+            e?.propertyType === _propertyType[2] || // 3 BR
+            e?.propertyType === _propertyType[3] || // 4 BR
+            e?.propertyType === _propertyType[4] // Villa
+          );
+        if (childGuests <= 3 && adultGuests <= 6 && totalGuests <= 9)
+          return (
+            e?.propertyType === _propertyType[2] || // 3 BR
+            e?.propertyType === _propertyType[3] // 4 BR
+            // e?.propertyType === _propertyType[4] // Villa
+          );
+        if (childGuests <= 4 && adultGuests <= 8 && totalGuests <= 12)
+          return (
+            // e?.propertyType === _propertyType[2] || // 3 BR
+            // e?.propertyType === _propertyType[3] || // 4 BR
+            e?.propertyType === _propertyType[4] // Villa
+          );
+      });
+    }
+
     return propertiesToDisplay;
   };
 
@@ -112,6 +158,45 @@ export default function TravelListingFilters({ sx, ...other }) {
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);
+
+  // const [guests, setGuests] = useState({
+  //   adults: 0,
+  //   children: 0,
+  // });
+
+  const handleIncrementGuests = useCallback(
+    (guest) => {
+      if (guest === 'children') {
+        setFilters({
+          ...filters,
+          guests: { ...filters.guests, children: filters.guests.children + 1 },
+        });
+      } else {
+        setFilters({
+          ...filters,
+          guests: { ...filters.guests, adults: filters.guests.adults + 1 },
+        });
+      }
+    },
+    [filters, setFilters]
+  );
+
+  const handleDecreaseGuests = useCallback(
+    (guest) => {
+      if (guest === 'children') {
+        setFilters({
+          ...filters,
+          guests: { ...filters.guests, children: filters.guests.children - 1 },
+        });
+      } else {
+        setFilters({
+          ...filters,
+          guests: { ...filters.guests, adults: filters.guests.adults - 1 },
+        });
+      }
+    },
+    [filters, setFilters]
+  );
 
   // const handleChangeDepartureDay = useCallback((newValue) => {
   //   setDepartureDay(newValue);
@@ -171,9 +256,10 @@ export default function TravelListingFilters({ sx, ...other }) {
 
       <Divider flexItem orientation="vertical" />
 
-      <FilterGuest
-        onChange={(e, value) => setFilters({ ...filters, guests: value })}
-        value={guests}
+      <FilterGuests
+        guests={guests}
+        onDecreaseGuests={handleDecreaseGuests}
+        onIncrementGuests={handleIncrementGuests}
       />
     </Stack>
   );

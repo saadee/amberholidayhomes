@@ -12,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 import { fCurrency } from 'src/utils/format-number';
+import { getNightsFromDates } from 'src/utils/common';
 
 import FilterTime from '../filters/filter-time';
 import FilterGuests from '../filters/filter-guests';
@@ -21,18 +22,18 @@ import FilterGuests from '../filters/filter-guests';
 export default function TravelTourDetailsReserveForm({ tour }) {
   const router = useRouter();
 
-  const [departureDay, setDepartureDay] = useState(null);
+  const [departureDay, setDepartureDay] = useState([null, null]);
 
   const [guests, setGuests] = useState({
     adults: 0,
     children: 0,
   });
 
-  const { price, priceSale } = tour;
+  const { priceSale, rentPerNight } = tour;
 
-  const handleChangeDepartureDay = useCallback((newValue) => {
+  const handleChangeDepartureDay = (newValue) => {
     setDepartureDay(newValue);
-  }, []);
+  };
 
   const handleIncrementGuests = useCallback(
     (guest) => {
@@ -57,8 +58,10 @@ export default function TravelTourDetailsReserveForm({ tour }) {
   );
 
   const handleClickReserve = useCallback(() => {
-    router.push(paths.travel.checkout);
+    router.push(paths.checkout);
   }, [router]);
+
+  const totalAmount = fCurrency(getNightsFromDates(departureDay) * rentPerNight);
 
   return (
     <Card>
@@ -70,24 +73,23 @@ export default function TravelTourDetailsReserveForm({ tour }) {
             </Box>
           )}
 
-          {fCurrency(price)}
-          <Typography variant="body2" component="span" sx={{ color: 'text.disabled', ml: 1 }}>
-            /Tour
+          {fCurrency(rentPerNight)}
+          <Typography variant="body1" component="span" sx={{ color: 'text.disabled', ml: 1 }}>
+            /Night
           </Typography>
         </Stack>
 
         <Stack spacing={1.5}>
           <Box
             sx={{
-              py: 0.5,
-              px: 1.5,
               borderRadius: 1,
               bgcolor: (theme) => alpha(theme.palette.grey[500], 0.08),
             }}
           >
             <FilterTime
-              departureDay={departureDay}
-              onChangeDepartureDay={handleChangeDepartureDay}
+              sx={{ width: '100%' }}
+              value={departureDay}
+              onChange={handleChangeDepartureDay}
             />
           </Box>
 
@@ -107,7 +109,7 @@ export default function TravelTourDetailsReserveForm({ tour }) {
           </Box>
         </Stack>
 
-        <Stack spacing={1} direction="row" alignItems="center" justifyContent="space-between">
+        {/* <Stack spacing={1} direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="body2" sx={{ color: 'text.disabled' }}>
             Service charge
           </Typography>
@@ -119,7 +121,7 @@ export default function TravelTourDetailsReserveForm({ tour }) {
             Discount
           </Typography>
           <Typography variant="body2"> - </Typography>
-        </Stack>
+        </Stack> */}
       </Stack>
 
       <Divider sx={{ borderStyle: 'dashed' }} />
@@ -127,7 +129,7 @@ export default function TravelTourDetailsReserveForm({ tour }) {
       <Stack spacing={3} sx={{ p: 3 }}>
         <Stack spacing={1} direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="h5">Total</Typography>
-          <Typography variant="h5">{fCurrency(priceSale)}</Typography>
+          <Typography variant="h5">{totalAmount}</Typography>
         </Stack>
 
         <Button size="large" variant="contained" color="inherit" onClick={handleClickReserve}>
@@ -139,8 +141,5 @@ export default function TravelTourDetailsReserveForm({ tour }) {
 }
 
 TravelTourDetailsReserveForm.propTypes = {
-  tour: PropTypes.shape({
-    price: PropTypes.number,
-    priceSale: PropTypes.number,
-  }),
+  tour: PropTypes.object,
 };

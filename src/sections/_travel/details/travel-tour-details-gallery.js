@@ -10,7 +10,7 @@ import Lightbox, { useLightbox } from 'src/components/lightbox';
 // ----------------------------------------------------------------------
 
 export default function TravelTourDetailsGallery({ images }) {
-  const slides = images.map((slide) => ({
+  const slides = images?.map((slide) => ({
     src: slide,
   }));
 

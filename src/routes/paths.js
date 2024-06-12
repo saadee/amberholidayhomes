@@ -103,6 +103,7 @@ export const paths = {
   // Others
   pages: '/pages',
   listings: '/listing',
+  checkout: '/checkout',
   listingsView: (id) => `/listing/${id}`,
   docs: 'https://zone-docs.vercel.app',
   license: 'https://material-ui.com/store/license/#i-standard-license',

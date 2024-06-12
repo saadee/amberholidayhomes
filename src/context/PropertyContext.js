@@ -27,6 +27,17 @@ export const PropertyProvider = ({ children }) => {
   const [properties, setProperties] = useState([]);
   const [filterProperties, setFilterProperties] = useState([]);
   const [propertyToView, setPropertyToView] = useState({});
+  const [filters, setFilters] = useState({
+    bath: null,
+    rooms: null,
+    propertyType: null,
+    location: null,
+    guests: {
+      adults: 0,
+      children: 0,
+    },
+    dates: [null, null],
+  });
 
   //--------------------------------------------------------------------
   // Side Effects
@@ -81,8 +92,10 @@ export const PropertyProvider = ({ children }) => {
       isListingLoading,
       propertyToView,
       setPropertyToView,
+      filters,
+      setFilters,
     }),
-    [properties, filterProperties, isListingLoading, propertyToView]
+    [properties, filterProperties, isListingLoading, propertyToView, filters]
   );
   return <PropertyContext.Provider value={memoizedValue}>{children}</PropertyContext.Provider>;
 };

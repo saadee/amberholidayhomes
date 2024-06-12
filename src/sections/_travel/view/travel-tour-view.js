@@ -2,9 +2,10 @@ import { useParams } from 'react-router';
 import { useEffect, useCallback } from 'react';
 import { doc, getDoc, collection } from 'firebase/firestore';
 
+import { Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
-import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
+import Container from '@mui/material/Container';
 
 import { _tours } from 'src/_mock';
 import { DB } from 'src/context/AuthContext';
@@ -13,10 +14,12 @@ import { SplashScreen } from 'src/components/loading-screen';
 import { usePropertyContext } from 'src/context/PropertyContext';
 
 import TravelNewsletter from '../travel-newsletter';
+import TourMapContainer from '../details/tour-map-container';
 // import TravelTourListSimilar from '../list/travel-tour-list-similar';
 import TravelTourDetailsHeader from '../details/travel-tour-details-header';
 import TravelTourDetailsGallery from '../details/travel-tour-details-gallery';
 import TravelTourDetailsSummary from '../details/travel-tour-details-summary';
+import TravelTourDetailsOverview from '../details/travel-tour-details-Overview';
 import TravelTourDetailsReserveForm from '../details/travel-tour-details-reserve-form';
 
 // ----------------------------------------------------------------------
@@ -28,6 +31,8 @@ export default function TravelTourView() {
   const { id } = useParams();
 
   const { propertyToView, setPropertyToView } = usePropertyContext();
+
+  const { cordinates } = propertyToView;
 
   const getPropertyDetailsById = useCallback(
     async (propertyId) => {
@@ -65,37 +70,48 @@ export default function TravelTourView() {
     if (!propertyToView?.id) {
       getPropertyDetailsById(id);
     }
+    loading.onFalse();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getPropertyDetailsById, id, propertyToView?.id]);
 
   if (loading.value) {
     return <SplashScreen />;
   }
 
+  const renderMap = (
+    <div>
+      <Typography variant="h4" my={3}>
+        Map{' '}
+      </Typography>
+      {cordinates && <TourMapContainer center={cordinates} />}
+    </div>
+  );
+
   return (
-    <>
-      <Container sx={{ overflow: 'hidden' }}>
-        <TravelTourDetailsHeader tour={propertyToView} />
-        <TravelTourDetailsGallery images={propertyToView?.images} />
+    propertyToView?.id && (
+      <>
+        <Container sx={{ overflow: 'hidden' }}>
+          <TravelTourDetailsHeader tour={propertyToView} />
+          {propertyToView?.images && <TravelTourDetailsGallery images={propertyToView?.images} />}
 
-        <Grid container columnSpacing={8} rowSpacing={5} direction="row-reverse">
-          <Grid xs={12} md={5} lg={4}>
-            <TravelTourDetailsReserveForm tour={_mockTour} />
-          </Grid>
+          <Grid container columnSpacing={8} rowSpacing={5} direction="row-reverse">
+            <Grid xs={12} md={5} lg={4}>
+              <TravelTourDetailsReserveForm tour={propertyToView} />
+            </Grid>
 
-          <Grid xs={12} md={7} lg={8}>
-            <Divider sx={{ borderStyle: 'dashed', my: 5 }} />
+            <Grid xs={12} md={7} lg={8}>
+              {/* <Divider sx={{ borderStyle: 'dashed', my: 5 }} /> */}
+              <TravelTourDetailsOverview propertyToView={propertyToView} />
 
-            <TravelTourDetailsSummary tour={_mockTour} />
-
-            {/* <Stack direction="row" flexWrap="wrap" sx={{ mt: 5 }}>
+              {/* <Stack direction="row" flexWrap="wrap" sx={{ mt: 5 }}>
               <Typography variant="subtitle2" sx={{ mt: 0.75, mr: 1.5 }}>
-                Share:
+              Share:
               </Typography>
-
+              
               <Stack direction="row" alignItems="center" flexWrap="wrap">
-                {_socials.map((social) => (
-                  <Button
-                    key={social.value}
+              {_socials.map((social) => (
+                <Button
+                key={social.value}
                     size="small"
                     variant="outlined"
                     startIcon={<Iconify icon={social.icon} />}
@@ -115,17 +131,23 @@ export default function TravelTourView() {
                 ))}
               </Stack>
             </Stack> */}
+            </Grid>
+            <Grid xs={12}>
+              <TravelTourDetailsSummary tour={_mockTour} propertyToView={propertyToView} />
+
+              {renderMap}
+            </Grid>
           </Grid>
-        </Grid>
-      </Container>
+        </Container>
 
-      <Divider sx={{ my: 10 }} />
+        <Divider sx={{ my: 10 }} />
 
-      {/* <ReviewTravel /> */}
+        {/* <ReviewTravel /> */}
 
-      {/* <TravelTourListSimilar tours={_tours.slice(-4)} /> */}
+        {/* <TravelTourListSimilar tours={_tours.slice(-4)} /> */}
 
-      <TravelNewsletter />
-    </>
+        <TravelNewsletter />
+      </>
+    )
   );
 }

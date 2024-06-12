@@ -109,7 +109,7 @@ export const pageLinks = [
 
 export const navConfig = [
   { title: 'Home', path: '/' },
-  { title: 'About Us', path: '/about' },
+  { title: 'Listing', path: '/listing' },
   { title: 'Interior Services', path: '/interior-services' },
   { title: 'Career', path: '/career' },
   // { title: 'Components', path: paths.components.root },
