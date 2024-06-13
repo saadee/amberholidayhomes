@@ -105,6 +105,7 @@ export const paths = {
   listings: '/listing',
   checkout: '/checkout',
   listingsView: (id) => `/listing/${id}`,
+  orderCompleted: '/order-completed',
   docs: 'https://zone-docs.vercel.app',
   license: 'https://material-ui.com/store/license/#i-standard-license',
   minimalStore: 'https://material-ui.com/store/items/minimal-dashboard',

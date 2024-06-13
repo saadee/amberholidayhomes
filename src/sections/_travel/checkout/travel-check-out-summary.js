@@ -18,7 +18,7 @@ import { fCurrency, fShortenNumber } from 'src/utils/format-number';
 
 export default function TravelCheckOutSummary({
   tour,
-  guests,
+  guestsToBooked,
   dates,
   isSubmitting,
   onDecreaseGuests,
@@ -26,7 +26,7 @@ export default function TravelCheckOutSummary({
   onChangeDepartureDay,
   propertyToView,
 }) {
-  const { images, title, rentPerNight } = propertyToView;
+  const { images, title, rentPerNight, rooms, bath, guests } = propertyToView;
 
   const totalAmount = fCurrency(getNightsFromDates(dates) * rentPerNight);
 
@@ -68,11 +68,32 @@ export default function TravelCheckOutSummary({
 
           <Divider sx={{ borderStyle: 'dashed', my: 2.5 }} />
 
-          {/* <Stack direction="row" alignItems="center" spacing={1.5}>
-           <Typography variant='body1'>bath</Typography>
-           <Typography variant='body1'>bath</Typography>
-           <Typography variant='body1'>bath</Typography>
-          </Stack> */}
+          <Stack direction="row" alignItems="center" spacing={1.5}>
+            <Stack
+              flexGrow={1}
+              direction="row"
+              alignItems="center"
+              sx={{ typography: 'body2', color: 'text.disabled' }}
+            >
+              <Iconify icon="mdi:users" width={25} sx={{ mr: 1 }} /> {guests}
+            </Stack>
+            <Stack
+              flexGrow={1}
+              direction="row"
+              alignItems="center"
+              sx={{ typography: 'body2', color: 'text.disabled' }}
+            >
+              <Iconify icon="material-symbols:bed" width={25} sx={{ mr: 1 }} /> {rooms}
+            </Stack>
+            <Stack
+              flexGrow={1}
+              direction="row"
+              alignItems="center"
+              sx={{ typography: 'body2', color: 'text.disabled' }}
+            >
+              <Iconify icon="solar:bath-bold" width={25} sx={{ mr: 1 }} /> {bath}
+            </Stack>
+          </Stack>
         </Stack>
       </Box>
 
@@ -93,7 +114,7 @@ export default function TravelCheckOutSummary({
             <Stack spacing={0.5}>
               <Typography variant="caption">Guests</Typography>
               <Typography variant="body" color="text.primary">
-                4
+                {guestsToBooked.adults + guestsToBooked.children}
               </Typography>
             </Stack>
           </Stack>
@@ -161,7 +182,7 @@ TravelCheckOutSummary.propTypes = {
   onIncrementGuests: PropTypes.func,
   onChangeDepartureDay: PropTypes.func,
   dates: PropTypes.instanceOf(Date),
-  guests: PropTypes.shape({
+  guestsToBooked: PropTypes.shape({
     adults: PropTypes.number,
     children: PropTypes.number,
   }),

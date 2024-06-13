@@ -8,8 +8,7 @@ import PropTypes from 'prop-types';
 import { where, query, getDocs, collection } from 'firebase/firestore';
 import { useMemo, useState, useEffect, useContext, useCallback, createContext } from 'react';
 
-import { _propertyType } from 'src/_mock';
-import { shuffleArray } from 'src/utils/common';
+import { getMaxGuests } from 'src/utils/common';
 import { useBoolean } from 'src/hooks/use-boolean';
 
 import { DB } from './AuthContext';
@@ -60,11 +59,18 @@ export const PropertyProvider = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      await getAvailableProperties({});
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filters]);
+
   //--------------------------------------------------------------------
   // Callbacks
   //--------------------------------------------------------------------
 
-  const getAllProperties = async () => {
+  const getAllProperties = useCallback(async () => {
     isPropertiesLoading.onToggle();
     // Reference to the 'properties' collection
     const propertyCollection = collection(DB, 'property');
@@ -81,7 +87,7 @@ export const PropertyProvider = ({ children }) => {
         data.push({ id: d.id, ...d.data() });
       });
 
-      const Shuffled = shuffleArray(data);
+      const Shuffled = data;
 
       setProperties(Shuffled);
       isPropertiesLoading.onToggle();
@@ -89,7 +95,7 @@ export const PropertyProvider = ({ children }) => {
       isPropertiesLoading.onToggle();
       console.error('Error getting documents: ', error);
     }
-  };
+  }, [isPropertiesLoading]);
 
   // eslint-disable-next-line no-shadow
   const filterOutBasedonSpecs = ({ propertiesToDisplay, filters }) => {
@@ -98,20 +104,6 @@ export const PropertyProvider = ({ children }) => {
     const adultGuests = guests?.adults || 0;
     const childGuests = guests?.children || 0;
     // const totalGuests = adultGuests + childGuests;
-
-    const getMaxGuests = (propertyType, isVilla, beds) => {
-      if (isVilla) {
-        if ((propertyType === _propertyType[4] || propertyType === _propertyType[3]) && beds <= 4)
-          return { adults: 8, children: 3 };
-        if (propertyType === _propertyType[4] && beds <= 5) return { adults: 10, children: 4 };
-      } else {
-        if (propertyType === _propertyType[0] || propertyType === _propertyType[5])
-          return { adults: 2, children: 1 };
-        if (propertyType === _propertyType[1]) return { adults: 4, children: 2 };
-        if (propertyType === _propertyType[2]) return { adults: 6, children: 3 };
-      }
-      return { adults: 0, children: 0 }; // Default case
-    };
 
     if (bath) propertiesToDisplay = propertiesToDisplay?.filter((e) => e?.bath >= bath);
     if (rooms) propertiesToDisplay = propertiesToDisplay?.filter((e) => e?.rooms >= rooms);
@@ -129,7 +121,8 @@ export const PropertyProvider = ({ children }) => {
     return propertiesToDisplay;
   };
 
-  const getAvailableProperties = useCallback(async () => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const getAvailableProperties = async () => {
     try {
       const propertiesToDisplay = properties;
       let reservedPropertyIds = {};
@@ -178,7 +171,7 @@ export const PropertyProvider = ({ children }) => {
       console.log('Error in getting Available properties', error);
       return null;
     }
-  }, [checkInDate, checkOutDate, filters, isListingLoading, properties]);
+  };
 
   // --------------------------------------------------------------------
   // Return
@@ -195,16 +188,8 @@ export const PropertyProvider = ({ children }) => {
       setPropertyToView,
       filters,
       setFilters,
-      getAvailableProperties,
     }),
-    [
-      properties,
-      filterProperties,
-      isListingLoading,
-      propertyToView,
-      filters,
-      getAvailableProperties,
-    ]
+    [properties, filterProperties, isListingLoading, propertyToView, filters]
   );
   return <PropertyContext.Provider value={memoizedValue}>{children}</PropertyContext.Provider>;
 };

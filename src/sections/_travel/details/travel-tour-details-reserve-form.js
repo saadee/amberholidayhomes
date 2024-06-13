@@ -9,11 +9,12 @@ import Divider from '@mui/material/Divider';
 import { alpha } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
-// import { paths } from 'src/routes/paths';
-// import { useRouter } from 'src/routes/hooks';
+import { paths } from 'src/routes/paths';
+import { _propertyType } from 'src/_mock';
+import { useRouter } from 'src/routes/hooks';
 import { fCurrency } from 'src/utils/format-number';
-import { getNightsFromDates } from 'src/utils/common';
 import { usePropertyContext } from 'src/context/PropertyContext';
+import { getMaxGuests, getNightsFromDates } from 'src/utils/common';
 
 import FilterTime from '../filters/filter-time';
 import FilterGuests from '../filters/filter-guests';
@@ -21,27 +22,32 @@ import FilterGuests from '../filters/filter-guests';
 // ----------------------------------------------------------------------
 
 export default function TravelTourDetailsReserveForm({ tour }) {
-  // const router = useRouter();
-  const { setFilters, filters } = usePropertyContext();
+  const router = useRouter();
+  const { setFilters, filters, filterProperties } = usePropertyContext();
   const { dates, guests } = filters;
 
-  const { priceSale, rentPerNight } = tour;
+  const { priceSale, rentPerNight, propertyType, beds } = tour;
+
+  const isVilla = propertyType === _propertyType[4];
+  const { adults, children } = getMaxGuests(propertyType, isVilla, beds?.length);
 
   const handleIncrementGuests = useCallback(
     (guest) => {
       if (guest === 'children') {
-        setFilters({
-          ...filters,
-          guests: { ...filters.guests, children: filters.guests.children + 1 },
-        });
-      } else {
+        if (guests.children < children) {
+          setFilters({
+            ...filters,
+            guests: { ...filters.guests, children: filters.guests.children + 1 },
+          });
+        }
+      } else if (guests.adults < adults) {
         setFilters({
           ...filters,
           guests: { ...filters.guests, adults: filters.guests.adults + 1 },
         });
       }
     },
-    [filters, setFilters]
+    [adults, children, filters, guests.adults, guests.children, setFilters]
   );
 
   const handleDecreaseGuests = useCallback(
@@ -62,8 +68,10 @@ export default function TravelTourDetailsReserveForm({ tour }) {
   );
 
   const handleClickReserve = useCallback(() => {
-    // router.push(paths.checkout);
-  }, []);
+    router.push(paths.checkout);
+  }, [router]);
+
+  const isPropertyAvailable = filterProperties?.find((e) => e?.id === tour.id);
 
   const totalAmount = fCurrency(getNightsFromDates(dates) * rentPerNight);
 
@@ -96,6 +104,11 @@ export default function TravelTourDetailsReserveForm({ tour }) {
               value={dates}
             />
           </Box>
+          {!isPropertyAvailable?.id && dates[0] && (
+            <Typography variant="body2" color="error">
+              Not available in the selected dates
+            </Typography>
+          )}
 
           <Box
             sx={{
@@ -136,7 +149,13 @@ export default function TravelTourDetailsReserveForm({ tour }) {
           <Typography variant="h5">{totalAmount}</Typography>
         </Stack>
 
-        <Button size="large" variant="contained" color="inherit" onClick={handleClickReserve}>
+        <Button
+          disabled={!isPropertyAvailable?.id}
+          size="large"
+          variant="contained"
+          color="inherit"
+          onClick={handleClickReserve}
+        >
           Reserve
         </Button>
       </Stack>

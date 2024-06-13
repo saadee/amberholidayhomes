@@ -40,7 +40,7 @@ export default function FilterGuests({
         placeholder="Guests"
         startAdornment={
           <InputAdornment position="start">
-            <Iconify width={24} icon="carbon:events" sx={{ mr: 1, }} />
+            <Iconify width={24} icon="carbon:events" sx={{ mr: 1 }} />
           </InputAdornment>
         }
         onClick={handleOpen}
@@ -73,6 +73,7 @@ export default function FilterGuests({
             title="Children"
             caption="Ages 2 - 12"
             total={guests.children}
+            max={5}
             onDecrease={() => onDecreaseGuests('children')}
             onIncrement={() => onIncrementGuests('children')}
           />

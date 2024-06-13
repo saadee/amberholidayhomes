@@ -1,5 +1,7 @@
 import { Timestamp } from 'firebase/firestore';
 
+import { _propertyType } from 'src/_mock';
+
 export function shuffleArray(array) {
   let currentIndex = array.length;
 
@@ -37,4 +39,18 @@ export const getNightsFromDates = (dates) => {
     const numberOfNights = Math.ceil(timeDiff / oneDayInMs);
     return numberOfNights;
   }
+};
+
+export const getMaxGuests = (propertyType, isVilla, beds) => {
+  if (isVilla) {
+    if ((propertyType === _propertyType[4] || propertyType === _propertyType[3]) && beds <= 4)
+      return { adults: 8, children: 3 };
+    if (propertyType === _propertyType[4] && beds <= 5) return { adults: 10, children: 4 };
+  } else {
+    if (propertyType === _propertyType[0] || propertyType === _propertyType[5])
+      return { adults: 2, children: 1 };
+    if (propertyType === _propertyType[1]) return { adults: 4, children: 2 };
+    if (propertyType === _propertyType[2]) return { adults: 6, children: 3 };
+  }
+  return { adults: 0, children: 0 }; // Default case
 };

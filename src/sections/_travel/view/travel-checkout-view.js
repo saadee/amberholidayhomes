@@ -11,9 +11,8 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
-import { paths } from 'src/routes/paths';
-import { useRouter } from 'src/routes/hooks';
-import { useBoolean } from 'src/hooks/use-boolean';
+// import { paths } from 'src/routes/paths';
+// import { useRouter } from 'src/routes/hooks';
 import FormProvider from 'src/components/hook-form';
 import { usePropertyContext } from 'src/context/PropertyContext';
 
@@ -24,34 +23,20 @@ import TravelCheckOutShippingForm from '../checkout/travel-check-out-shipping-fo
 // ----------------------------------------------------------------------
 
 export default function TravelCheckoutView() {
-  const router = useRouter();
+  // const router = useRouter();
   const { setFilters, filters, propertyToView } = usePropertyContext();
   const { dates, guests } = filters;
-  const sameBilling = useBoolean();
-
-
 
   const TravelCheckoutSchema = Yup.object().shape({
-    billingAddress: Yup.object().shape({
-      firstName: Yup.string().required('First name is required'),
-      lastName: Yup.string().required('Last name is required'),
-      fullAddress: Yup.string().required('Full address is required'),
-    }),
+    fullName: Yup.string().required('Full name is required'),
+    email: Yup.string().email().required('Email is required'),
+    phoneNumber: Yup.number().required('Phone Number is required'),
   });
 
   const defaultValues = {
-    billingAddress: {
-      firstName: '',
-      lastName: '',
-      fullAddress: '',
-      fullAddress2: '',
-    },
-    shippingAddress: {
-      firstName: '',
-      lastName: '',
-      fullAddress: '',
-      fullAddress2: '',
-    },
+    fullName: '',
+    email: '',
+    phoneNumber: '',
     paymentMethods: {
       methods: 'paypal',
       card: {
@@ -78,7 +63,7 @@ export default function TravelCheckoutView() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
-      router.push(paths.travel.orderCompleted);
+      // router.push(paths.orderCompleted);
       console.log('DATA', data);
     } catch (error) {
       console.error(error);
@@ -138,8 +123,6 @@ export default function TravelCheckoutView() {
               <StepLabel title="Shipping Information" step="1" />
 
               <TravelCheckOutShippingForm
-                sameBilling={sameBilling.value}
-                onChangeSameBilling={sameBilling.onToggle}
               />
 
               <Divider sx={{ my: 5, borderStyle: 'dashed' }} />
@@ -153,7 +136,7 @@ export default function TravelCheckoutView() {
           <Grid xs={12} md={5}>
             <TravelCheckOutSummary
               propertyToView={propertyToView}
-              guests={guests}
+              guestsToBooked={guests}
               dates={dates}
               isSubmitting={isSubmitting}
               onDecreaseGuests={handleDecreaseGuests}

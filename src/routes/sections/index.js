@@ -15,7 +15,7 @@ const IndexPage = lazy(() => import('src/pages/travel/landing'));
 const ToursPage = lazy(() => import('src/pages/travel/tours'));
 const TravelTourPage = lazy(() => import('src/pages/travel/tour'));
 const CheckoutPage = lazy(() => import('src/pages/travel/checkout'));
-
+const OrderCompletedPage = lazy(() => import('src/pages/travel/order-completed'));
 
 // const SupportPage = lazy(() => import('src/pages/support'));
 
@@ -34,6 +34,7 @@ export default function Router() {
         { path: 'listing', element: <ToursPage /> },
         { path: 'listing/:id', element: <TravelTourPage /> },
         { path: 'checkout', element: <CheckoutPage /> },
+        { path: 'order-completed', element: <OrderCompletedPage /> },
         // { path: 'support', element: <SupportPage /> },
 
         // ...marketingRoutes,

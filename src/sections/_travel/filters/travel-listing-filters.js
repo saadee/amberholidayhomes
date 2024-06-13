@@ -17,26 +17,13 @@ import FilterPropertyType from './filter-property-type';
 // ----------------------------------------------------------------------
 
 export default function TravelListingFilters({ sx, ...other }) {
-  const {
-    setFilterProperties,
-    properties,
-    filters,
-    setFilters,
-    getAvailableProperties,
-  } = usePropertyContext();
+  const { setFilterProperties, properties, filters, setFilters } = usePropertyContext();
 
   const { bath, rooms, propertyType, location, dates, guests } = filters;
 
   useEffect(() => {
     setFilterProperties(properties);
   }, [properties, setFilterProperties]);
-
-  useEffect(() => {
-    (async () => {
-      await getAvailableProperties({});
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters]);
 
   // const [guests, setGuests] = useState({
   //   adults: 0,
