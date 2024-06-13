@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 
 import Link from '@mui/material/Link';
 import { Avatar } from '@mui/material';
@@ -12,11 +13,12 @@ import IconButton from '@mui/material/IconButton';
 
 import { _socials } from 'src/_mock';
 import Logo from 'src/components/logo';
+import { paths } from 'src/routes/paths';
 import Iconify from 'src/components/iconify';
-import { usePathname } from 'src/routes/hooks';
-import { useBoolean } from 'src/hooks/use-boolean';
 import { RouterLink } from 'src/routes/components';
+import { useBoolean } from 'src/hooks/use-boolean';
 import TextMaxLine from 'src/components/text-max-line';
+import { useRouter, usePathname } from 'src/routes/hooks';
 import { usePropertyContext } from 'src/context/PropertyContext';
 
 // ----------------------------------------------------------------------
@@ -35,7 +37,15 @@ import { usePropertyContext } from 'src/context/PropertyContext';
 // ----------------------------------------------------------------------
 
 export default function Footer() {
-  const { properties } = usePropertyContext();
+  const router = useRouter();
+  const { properties, setPropertyToView } = usePropertyContext();
+  const [sortedProperties, setSortedProperties] = useState([]);
+
+  useEffect(() => {
+    const sorted = sortByCreatedAt(properties);
+    setSortedProperties(sorted?.slice(0, 3));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [properties]);
   // const mdUp = useResponsive('up', 'md');
 
   // const pathname = usePathname();
@@ -57,6 +67,17 @@ export default function Footer() {
   //     </Typography>
   //   </Container>
   // );
+  const sortByCreatedAt = (prop) =>
+    prop.sort((a, b) => {
+      const dateA = new Date(a.createdAt.toDate());
+      const dateB = new Date(b.createdAt.toDate());
+      return dateB - dateA;
+    });
+
+  const onClickProperty = (tour) => {
+    setPropertyToView(tour);
+    router.push(paths.listingsView(tour?.id));
+  };
 
   const mainFooter = (
     <>
@@ -139,14 +160,18 @@ export default function Footer() {
                 <Typography variant="h4" mb={2}>
                   Latest Listings
                 </Typography>
-                {properties.slice(0, 3)?.map((tour, i) => (
+                {sortedProperties?.map((tour, i) => (
                   <Stack
                     key={i}
                     direction="row"
                     alignItems="center"
                     spacing={2.5}
+                    onClick={() => onClickProperty(tour)}
                     sx={{
-                      // px: 2,
+                      ':hover': {
+                        bgcolor: 'background.neutral',
+                      },
+                      borderRadius: '10px',
                       py: 1,
                       cursor: 'pointer',
                       color: 'common.white',
