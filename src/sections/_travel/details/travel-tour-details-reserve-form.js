@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -9,10 +9,11 @@ import Divider from '@mui/material/Divider';
 import { alpha } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
-import { paths } from 'src/routes/paths';
-import { useRouter } from 'src/routes/hooks';
+// import { paths } from 'src/routes/paths';
+// import { useRouter } from 'src/routes/hooks';
 import { fCurrency } from 'src/utils/format-number';
 import { getNightsFromDates } from 'src/utils/common';
+import { usePropertyContext } from 'src/context/PropertyContext';
 
 import FilterTime from '../filters/filter-time';
 import FilterGuests from '../filters/filter-guests';
@@ -20,48 +21,51 @@ import FilterGuests from '../filters/filter-guests';
 // ----------------------------------------------------------------------
 
 export default function TravelTourDetailsReserveForm({ tour }) {
-  const router = useRouter();
-
-  const [departureDay, setDepartureDay] = useState([null, null]);
-
-  const [guests, setGuests] = useState({
-    adults: 0,
-    children: 0,
-  });
+  // const router = useRouter();
+  const { setFilters, filters } = usePropertyContext();
+  const { dates, guests } = filters;
 
   const { priceSale, rentPerNight } = tour;
-
-  const handleChangeDepartureDay = (newValue) => {
-    setDepartureDay(newValue);
-  };
 
   const handleIncrementGuests = useCallback(
     (guest) => {
       if (guest === 'children') {
-        setGuests({ ...guests, children: guests.children + 1 });
+        setFilters({
+          ...filters,
+          guests: { ...filters.guests, children: filters.guests.children + 1 },
+        });
       } else {
-        setGuests({ ...guests, adults: guests.adults + 1 });
+        setFilters({
+          ...filters,
+          guests: { ...filters.guests, adults: filters.guests.adults + 1 },
+        });
       }
     },
-    [guests]
+    [filters, setFilters]
   );
 
   const handleDecreaseGuests = useCallback(
     (guest) => {
       if (guest === 'children') {
-        setGuests({ ...guests, children: guests.children - 1 });
+        setFilters({
+          ...filters,
+          guests: { ...filters.guests, children: filters.guests.children - 1 },
+        });
       } else {
-        setGuests({ ...guests, adults: guests.adults - 1 });
+        setFilters({
+          ...filters,
+          guests: { ...filters.guests, adults: filters.guests.adults - 1 },
+        });
       }
     },
-    [guests]
+    [filters, setFilters]
   );
 
   const handleClickReserve = useCallback(() => {
-    router.push(paths.checkout);
-  }, [router]);
+    // router.push(paths.checkout);
+  }, []);
 
-  const totalAmount = fCurrency(getNightsFromDates(departureDay) * rentPerNight);
+  const totalAmount = fCurrency(getNightsFromDates(dates) * rentPerNight);
 
   return (
     <Card>
@@ -88,8 +92,8 @@ export default function TravelTourDetailsReserveForm({ tour }) {
           >
             <FilterTime
               sx={{ width: '100%' }}
-              value={departureDay}
-              onChange={handleChangeDepartureDay}
+              onChange={(value) => setFilters({ ...filters, dates: value })}
+              value={dates}
             />
           </Box>
 

@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
+import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { useState, useCallback } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import Box from '@mui/material/Box';
@@ -11,7 +11,6 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
-import { _tours } from 'src/_mock';
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -26,15 +25,11 @@ import TravelCheckOutShippingForm from '../checkout/travel-check-out-shipping-fo
 
 export default function TravelCheckoutView() {
   const router = useRouter();
-  const { propertyToView } = usePropertyContext();
+  const { setFilters, filters, propertyToView } = usePropertyContext();
+  const { dates, guests } = filters;
   const sameBilling = useBoolean();
 
-  const [departureDay, setDepartureDay] = useState(new Date());
 
-  const [guests, setGuests] = useState({
-    adults: 2,
-    children: 1,
-  });
 
   const TravelCheckoutSchema = Yup.object().shape({
     billingAddress: Yup.object().shape({
@@ -90,30 +85,38 @@ export default function TravelCheckoutView() {
     }
   });
 
-  const handleChangeDepartureDay = useCallback((newValue) => {
-    setDepartureDay(newValue);
-  }, []);
-
   const handleIncrementGuests = useCallback(
     (guest) => {
       if (guest === 'children') {
-        setGuests({ ...guests, children: guests.children + 1 });
+        setFilters({
+          ...filters,
+          guests: { ...filters.guests, children: filters.guests.children + 1 },
+        });
       } else {
-        setGuests({ ...guests, adults: guests.adults + 1 });
+        setFilters({
+          ...filters,
+          guests: { ...filters.guests, adults: filters.guests.adults + 1 },
+        });
       }
     },
-    [guests]
+    [filters, setFilters]
   );
 
   const handleDecreaseGuests = useCallback(
     (guest) => {
       if (guest === 'children') {
-        setGuests({ ...guests, children: guests.children - 1 });
+        setFilters({
+          ...filters,
+          guests: { ...filters.guests, children: filters.guests.children - 1 },
+        });
       } else {
-        setGuests({ ...guests, adults: guests.adults - 1 });
+        setFilters({
+          ...filters,
+          guests: { ...filters.guests, adults: filters.guests.adults - 1 },
+        });
       }
     },
-    [guests]
+    [filters, setFilters]
   );
 
   return (
@@ -151,12 +154,10 @@ export default function TravelCheckoutView() {
             <TravelCheckOutSummary
               propertyToView={propertyToView}
               guests={guests}
-              tour={_tours[0]}
-              departureDay={departureDay}
+              dates={dates}
               isSubmitting={isSubmitting}
               onDecreaseGuests={handleDecreaseGuests}
               onIncrementGuests={handleIncrementGuests}
-              onChangeDepartureDay={handleChangeDepartureDay}
             />
           </Grid>
         </Grid>

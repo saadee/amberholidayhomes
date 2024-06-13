@@ -19,7 +19,7 @@ import { usePropertyContext } from 'src/context/PropertyContext';
 // ----------------------------------------------------------------------
 
 export default function TravelTourItem({ property }) {
-  const { slug, images, title, discountRatio, bath, guests, rentPerNight, address, rooms, id,propertyType } =
+  const { slug, images, title, discountRatio, bath, guests, rentPerNight, address, rooms, id } =
     property;
   const router = useRouter();
   const { setPropertyToView } = usePropertyContext();
@@ -124,14 +124,6 @@ export default function TravelTourItem({ property }) {
       <Divider sx={{ borderStyle: 'dashed' }} />
 
       <Stack direction="row" alignItems="center" sx={{ p: 2.5 }}>
-        <Stack
-          flexGrow={1}
-          direction="row"
-          alignItems="center"
-          sx={{ typography: 'body2', color: 'text.disabled' }}
-        >
-          <Iconify icon="mdi:users" width={25} sx={{ mr: 1 }} /> {propertyType}
-        </Stack>
         <Stack
           flexGrow={1}
           direction="row"

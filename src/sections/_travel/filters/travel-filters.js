@@ -1,11 +1,14 @@
 import PropTypes from 'prop-types';
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 
+import { paths } from 'src/routes/paths';
 import Iconify from 'src/components/iconify';
+import { useRouter } from 'src/routes/hooks';
+import { usePropertyContext } from 'src/context/PropertyContext';
 
 import FilterTime from './filter-time';
 import FilterGuests from './filter-guests';
@@ -14,37 +17,43 @@ import FilterLocation from './filter-location';
 // ----------------------------------------------------------------------
 
 export default function TravelFilters({ sx, ...other }) {
-  const [departureDay, setDepartureDay] = useState([null, null]);
+  const router = useRouter();
 
-  const [guests, setGuests] = useState({
-    adults: 0,
-    children: 0,
-  });
-
-  const handleChangeDepartureDay = useCallback((newValue) => {
-    setDepartureDay(newValue);
-  }, []);
+  const { setFilters, filters } = usePropertyContext();
+  const { location, dates, guests } = filters;
 
   const handleIncrementGuests = useCallback(
     (guest) => {
       if (guest === 'children') {
-        setGuests({ ...guests, children: guests.children + 1 });
+        setFilters({
+          ...filters,
+          guests: { ...filters.guests, children: filters.guests.children + 1 },
+        });
       } else {
-        setGuests({ ...guests, adults: guests.adults + 1 });
+        setFilters({
+          ...filters,
+          guests: { ...filters.guests, adults: filters.guests.adults + 1 },
+        });
       }
     },
-    [guests]
+    [filters, setFilters]
   );
 
   const handleDecreaseGuests = useCallback(
     (guest) => {
       if (guest === 'children') {
-        setGuests({ ...guests, children: guests.children - 1 });
+        setFilters({
+          ...filters,
+          guests: { ...filters.guests, children: filters.guests.children - 1 },
+        });
       } else {
-        setGuests({ ...guests, adults: guests.adults - 1 });
+        setFilters({
+          ...filters,
+          guests: { ...filters.guests, adults: filters.guests.adults - 1 },
+        });
       }
     },
-    [guests]
+    [filters, setFilters]
   );
 
   return (
@@ -55,13 +64,16 @@ export default function TravelFilters({ sx, ...other }) {
       sx={{ p: 2, borderRadius: 2, bgcolor: 'background.neutral', ...sx }}
       {...other}
     >
-      <FilterLocation />
+      <FilterLocation
+        onChange={(e, value) => setFilters({ ...filters, location: value })}
+        value={location}
+      />
 
       <Divider flexItem orientation="vertical" />
 
       <FilterTime
-        departureDay={departureDay}
-        onChangeDepartureDay={handleChangeDepartureDay}
+        onChange={(value) => setFilters({ ...filters, dates: value })}
+        value={dates}
         sx={{
           color: 'white',
           width: '100%',
@@ -83,6 +95,7 @@ export default function TravelFilters({ sx, ...other }) {
       />
 
       <Button
+        onClick={() => router.push(paths.listings)}
         size="large"
         color="secondary"
         variant="contained"

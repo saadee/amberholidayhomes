@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-import Box from '@mui/material/Box';
 import { alpha } from '@mui/system';
+import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
 import Container from '@mui/material/Container';
 
+import { usePropertyContext } from 'src/context/PropertyContext';
 import {
   _tours,
   _members,
@@ -28,10 +29,26 @@ import TravelLandingFavoriteDestinations from '../landing/travel-landing-favorit
 
 export default function TravelLandingView() {
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const { setFilters } = usePropertyContext();
 
   const handleVideoLoaded = () => {
     setVideoLoaded(true);
   };
+
+  useEffect(() => {
+    setFilters({
+      bath: null,
+      rooms: null,
+      propertyType: null,
+      location: null,
+      guests: {
+        adults: 0,
+        children: 0,
+      },
+      dates: [null, null],
+    });
+  }, [setFilters]);
+
   return (
     <>
       <Box sx={{ position: 'relative' }}>

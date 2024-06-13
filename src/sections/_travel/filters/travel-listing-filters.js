@@ -1,13 +1,10 @@
 /* eslint-disable no-shadow */
 import PropTypes from 'prop-types';
 import { useEffect, useCallback } from 'react';
-import { where, query, getDocs, collection } from 'firebase/firestore';
 
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 
-import { _propertyType } from 'src/_mock';
-import { DB } from 'src/context/AuthContext';
 import { usePropertyContext } from 'src/context/PropertyContext';
 
 import FilterBath from './filter-bath';
@@ -20,133 +17,15 @@ import FilterPropertyType from './filter-property-type';
 // ----------------------------------------------------------------------
 
 export default function TravelListingFilters({ sx, ...other }) {
-  const { setFilterProperties, properties, isListingLoading, filters, setFilters } =
-    usePropertyContext();
+  const {
+    setFilterProperties,
+    properties,
+    filters,
+    setFilters,
+    getAvailableProperties,
+  } = usePropertyContext();
 
   const { bath, rooms, propertyType, location, dates, guests } = filters;
-
-  const checkInDate = dates?.[0]
-    ? new Date(dates?.[0]).setHours(15, 0, 0, 0) // 3pm Noon
-    : null;
-
-  const checkOutDate = dates?.[1]
-    ? new Date(dates?.[1]).setHours(12, 0, 0, 0) // 12pm Noon
-    : null;
-  // Initialize Firestore
-
-  async function getAvailableProperties() {
-    try {
-      const propertiesToDisplay = properties;
-      let reservedPropertyIds = {};
-      let availableProperties = [];
-
-      if (checkInDate && checkOutDate) {
-        const checkInTimestamp = new Date(checkInDate);
-        const checkOutTimestamp = new Date(checkOutDate);
-
-        const reservationsRef = collection(DB, 'reservations');
-        const reservationsQuery = query(
-          reservationsRef,
-          where('checkIn', '<', checkOutTimestamp),
-          where('checkOut', '>', checkInTimestamp)
-        );
-
-        isListingLoading.onTrue();
-
-        const reservationDocs = await getDocs(reservationsQuery);
-        const overlappingReservations = reservationDocs.docs.map((doc) => doc.data());
-        isListingLoading.onFalse();
-
-        reservedPropertyIds = new Set(
-          overlappingReservations.map((reservation) => reservation.propertyId)
-        );
-        const filteredProperties = filterOutBasedonSpecs({
-          propertiesToDisplay,
-          filters,
-        });
-        availableProperties = filteredProperties.filter(
-          (property) => !reservedPropertyIds.has(property.id)
-        );
-      } else {
-        const filteredProperties = filterOutBasedonSpecs({
-          propertiesToDisplay,
-          filters,
-        });
-        availableProperties = filteredProperties;
-      }
-
-      // Perform Firebase operations here before returning
-      // For example, if you need to update something in Firebase, do it here
-      setFilterProperties(availableProperties);
-      return availableProperties;
-    } catch (error) {
-      console.log('Error in getting Available properties', error);
-      return null;
-    }
-  }
-
-  const filterOutBasedonSpecs = ({ propertiesToDisplay, filters }) => {
-    const { bath, rooms, location, propertyType, guests } = filters;
-
-    const childGuests = guests?.children;
-    const adultGuests = guests?.adults;
-
-    const totalGuests = guests.adults + guests.children;
-    console.log('totalGuests', totalGuests);
-
-    if (bath) propertiesToDisplay = propertiesToDisplay?.filter((e) => e?.bath >= bath);
-    if (rooms) propertiesToDisplay = propertiesToDisplay?.filter((e) => e?.rooms >= rooms);
-    if (location) propertiesToDisplay = propertiesToDisplay?.filter((e) => e?.area === location);
-
-    // if (adultGuests)
-    // propertiesToDisplay = propertiesToDisplay?.filter((e) => e?.guests >= totalGuests);
-    if (propertyType)
-      propertiesToDisplay = propertiesToDisplay?.filter((e) => e?.propertyType === propertyType);
-
-    if (childGuests) {
-      // eslint-disable-next-line consistent-return, array-callback-return
-      propertiesToDisplay = propertiesToDisplay?.filter((e) => {
-        if (adultGuests <= 2 && totalGuests <= 2)
-          return (
-            e?.propertyType === _propertyType[0] || // 1 BR
-            e?.propertyType === _propertyType[1] || // 2 BR
-            e?.propertyType === _propertyType[2] || // 3 BR
-            e?.propertyType === _propertyType[3] || // 4 BR
-            e?.propertyType === _propertyType[4] || // Villa
-            e?.propertyType === _propertyType[5] // Studio only
-          );
-
-        if (childGuests <= 1 && adultGuests <= 2 && totalGuests <= 3)
-          return (
-            e?.propertyType === _propertyType[0] || // 1 BR
-            e?.propertyType === _propertyType[1] || // 2 BR
-            e?.propertyType === _propertyType[2] // 3 BR
-          );
-
-        if (childGuests <= 2 && adultGuests <= 4 && totalGuests <= 6)
-          return (
-            e?.propertyType === _propertyType[1] || // 2 BR
-            e?.propertyType === _propertyType[2] || // 3 BR
-            e?.propertyType === _propertyType[3] || // 4 BR
-            e?.propertyType === _propertyType[4] // Villa
-          );
-        if (childGuests <= 3 && adultGuests <= 6 && totalGuests <= 9)
-          return (
-            e?.propertyType === _propertyType[2] || // 3 BR
-            e?.propertyType === _propertyType[3] // 4 BR
-            // e?.propertyType === _propertyType[4] // Villa
-          );
-        if (childGuests <= 4 && adultGuests <= 8 && totalGuests <= 12)
-          return (
-            // e?.propertyType === _propertyType[2] || // 3 BR
-            // e?.propertyType === _propertyType[3] || // 4 BR
-            e?.propertyType === _propertyType[4] // Villa
-          );
-      });
-    }
-
-    return propertiesToDisplay;
-  };
 
   useEffect(() => {
     setFilterProperties(properties);
