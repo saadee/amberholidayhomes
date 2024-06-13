@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { alpha, useTheme } from '@mui/material/styles';
 
+import { paths } from 'src/routes/paths';
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
+import { useRouter } from 'src/routes/hooks';
 import { bgBlur, bgGradient } from 'src/theme/css';
 import { fCurrency } from 'src/utils/format-number';
 import TextMaxLine from 'src/components/text-max-line';
@@ -115,6 +117,8 @@ TravelLandingFeatured.propTypes = {
 
 function CarouselItem({ tour }) {
   const theme = useTheme();
+  const router = useRouter();
+  const { setPropertyToView } = usePropertyContext();
 
   const renderOverlay = (
     <Box
@@ -133,6 +137,11 @@ function CarouselItem({ tour }) {
       }}
     />
   );
+
+  const onClickBook = () => {
+    setPropertyToView(tour);
+    router.push(paths.listingsView(tour?.id));
+  };
 
   return (
     <Box>
@@ -210,7 +219,7 @@ function CarouselItem({ tour }) {
             </Stack>
           </Stack>
 
-          <Button variant="contained" size="large" color="secondary">
+          <Button variant="contained" size="large" color="secondary" onClick={onClickBook}>
             Book Now
           </Button>
         </Stack>

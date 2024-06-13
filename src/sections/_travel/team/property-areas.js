@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -55,7 +54,7 @@ const PropertyAreasList = [
   },
 ];
 
-export default function PropertyAreas({ members }) {
+export default function PropertyAreas() {
   return (
     <Container
       sx={{
@@ -104,6 +103,4 @@ export default function PropertyAreas({ members }) {
   );
 }
 
-PropertyAreas.propTypes = {
-  members: PropTypes.array,
-};
+PropertyAreas.propTypes = {};

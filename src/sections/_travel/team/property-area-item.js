@@ -8,8 +8,11 @@ import Typography from '@mui/material/Typography';
 import { alpha, styled } from '@mui/material/styles';
 
 import Image from 'src/components/image';
+import { paths } from 'src/routes/paths';
 import { bgGradient } from 'src/theme/css';
+import { useRouter } from 'src/routes/hooks';
 import { varHover, varTranHover } from 'src/components/animate';
+import { usePropertyContext } from 'src/context/PropertyContext';
 
 // ----------------------------------------------------------------------
 
@@ -35,9 +38,16 @@ const StyledOverlay = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function PropertyAreaItem({ property }) {
+  const router = useRouter();
+  const { filters, setFilters } = usePropertyContext();
   const { title, image, description } = property;
 
   const theme = useTheme();
+
+  const onClickViewProperties = () => {
+    setFilters({ ...filters, location: title });
+    router.push(paths.listings);
+  };
   return (
     <Box
       component={m.div}
@@ -68,8 +78,9 @@ export default function PropertyAreaItem({ property }) {
               variant="contained"
               color="secondary"
               sx={{ width: 'fit-content', m: 'auto', mt: 1 }}
+              onClick={onClickViewProperties}
             >
-              Read More
+              View Properties
             </Button>
           </Stack>
         </Stack>

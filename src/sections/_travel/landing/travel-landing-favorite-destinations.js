@@ -2,18 +2,21 @@ import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
+import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import { alpha, useTheme } from '@mui/material/styles';
 
+import { paths } from 'src/routes/paths';
 import Image from 'src/components/image';
+import { useRouter } from 'src/routes/hooks';
 import { useResponsive } from 'src/hooks/use-responsive';
+import { usePropertyContext } from 'src/context/PropertyContext';
 
 import oneBr from '../../../assets/propertyType/1br.jpg';
 import TwoBr from '../../../assets/propertyType/2br.jpeg';
-import ThreeBr from '../../../assets/propertyType/3br.jpg';
 import Villa from '../../../assets/propertyType/villa.jpg';
+import ThreeBr from '../../../assets/propertyType/3br.jpg';
 
 // ----------------------------------------------------------------------
 
@@ -36,14 +39,13 @@ const PropertyTypes = [
     image: Villa,
   },
 ];
-export default function TravelLandingFavoriteDestinations({ tours }) {
+export default function TravelLandingFavoriteDestinations() {
   return (
     <Container
       sx={{
         py: { xs: 5, md: 10 },
       }}
     >
-      
       <Grid
         container
         rowSpacing={{ xs: 8, md: 0 }}
@@ -83,26 +85,32 @@ export default function TravelLandingFavoriteDestinations({ tours }) {
   );
 }
 
-TravelLandingFavoriteDestinations.propTypes = {
-  tours: PropTypes.array,
-};
+TravelLandingFavoriteDestinations.propTypes = {};
 
 // ----------------------------------------------------------------------
 
 function DestinationItem({ tour, order }) {
+  const router = useRouter();
+  const { filters, setFilters } = usePropertyContext();
   const theme = useTheme();
 
   const mdUp = useResponsive('up', 'md');
 
-  const { title,image } = tour;
+  const { title, image } = tour;
 
+  const onClickProperty = () => {
+    setFilters({ ...filters, propertyType: title });
+    router.push(paths.listings);
+  };
   return (
     <Box
+      onClick={onClickProperty}
       sx={{
         width: 1,
         borderRadius: 2,
         position: 'relative',
         overflow: 'hidden',
+        cursor: 'pointer',
       }}
     >
       <Image

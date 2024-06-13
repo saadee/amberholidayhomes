@@ -1,16 +1,11 @@
 import { useState, useEffect } from 'react';
 
-import { alpha } from '@mui/system';
 import Box from '@mui/material/Box';
+import { alpha } from '@mui/system';
 import { Typography } from '@mui/material';
 import Container from '@mui/material/Container';
 
 import { usePropertyContext } from 'src/context/PropertyContext';
-import {
-  _tours,
-  _members,
-  // _travelPosts, _testimonials
-} from 'src/_mock';
 
 import PropertyAreas from '../team/property-areas';
 import TravelNewsletter from '../travel-newsletter';
@@ -115,16 +110,16 @@ export default function TravelLandingView() {
 
       {/* <TravelLandingIntroduce /> */}
 
-      <TravelLandingFavoriteDestinations tours={_tours.slice(0, 4)} />
+      <TravelLandingFavoriteDestinations  />
 
-      <PropertyAreas members={_members} />
+      <PropertyAreas  />
 
       <TravelLandingSummary />
 
       <TravelLandingTourOffers />
       <TravelLandingFeatured />
 
-      <TravelLandingListWithUs tours={_tours.slice(0, 8)} />
+      <TravelLandingListWithUs  />
 
       {/* <BlogTravelLandingLatestPosts posts={_travelPosts.slice(2, 6)} /> */}
 

@@ -15,7 +15,7 @@ import TextMaxLine from 'src/components/text-max-line';
 
 // ----------------------------------------------------------------------
 
-export default function TravelLandingListWithUs({ tours }) {
+export default function TravelLandingListWithUs() {
   return (
     <Container
       sx={{
@@ -111,9 +111,7 @@ export default function TravelLandingListWithUs({ tours }) {
   );
 }
 
-TravelLandingListWithUs.propTypes = {
-  tours: PropTypes.array,
-};
+TravelLandingListWithUs.propTypes = {};
 
 // ----------------------------------------------------------------------
 
