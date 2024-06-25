@@ -35,9 +35,11 @@ export default function TravelToursView() {
             zIndex: 9,
           }}
         />
-        <Typography variant="h5" align="right" mb={2}>
-          Available Listings ({filterProperties?.length})
-        </Typography>
+        {!isListingLoading.value && (
+          <Typography variant="h5" align="right" mb={2}>
+            Available Listings ({filterProperties?.length})
+          </Typography>
+        )}
         <TravelTourList loading={isListingLoading.value} />
       </Container>
 

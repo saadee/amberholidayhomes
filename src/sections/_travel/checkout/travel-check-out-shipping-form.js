@@ -11,12 +11,12 @@ export default function TravelCheckOutShippingForm() {
     <Stack spacing={5}>
       <div>
         <Typography variant="overline" sx={{ color: 'text.secondary', mb: 3, display: 'block' }}>
-          Billing Address
+          Contact Information
         </Typography>
 
         <Stack spacing={2.5}>
           <Stack spacing={{ xs: 2.5, md: 2 }} direction={{ xs: 'column', md: 'row' }}>
-            <RHFTextField name="fullName" label="Full Name" />
+            <RHFTextField name="name" label="Full Name" />
             <RHFTextField name="email" label="Email" />
           </Stack>
           <RHFTextField name="phoneNumber" label="Phone Number" />

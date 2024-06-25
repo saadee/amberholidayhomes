@@ -104,3 +104,11 @@ export const _propertyType = [
   'Villa',
   'Studio',
 ];
+
+// ! Don't Change the order of the array, it can effect the reservations
+export const RESERVATION_STATUS_OPTIONS = [
+  { value: 'tentative-booking', label: 'Tentative Booking' },
+  { value: 'confirmed', label: 'Confirmed' },
+  { value: 'cancelled', label: 'Cancelled' },
+  { value: 'completed', label: 'Completed' },
+];

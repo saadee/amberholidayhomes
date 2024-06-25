@@ -129,20 +129,21 @@ export const PropertyProvider = ({ children }) => {
       let availableProperties = [];
 
       if (checkInDate && checkOutDate) {
-        const checkInTimestamp = new Date(checkInDate);
-        const checkOutTimestamp = new Date(checkOutDate);
-
         const reservationsRef = collection(DB, 'reservations');
         const reservationsQuery = query(
           reservationsRef,
-          where('checkIn', '<', checkOutTimestamp),
-          where('checkOut', '>', checkInTimestamp)
+          where('checkIn', '<', checkOutDate),
+          where('checkOut', '>', checkInDate)
         );
 
         isListingLoading.onTrue();
 
         const reservationDocs = await getDocs(reservationsQuery);
         const overlappingReservations = reservationDocs.docs.map((doc) => doc.data());
+        // overlappingReservations = overlappingReservations.filter(
+        //   (reservation) => reservation.checkIn < checkOutDate && reservation.checkOut > checkInDate
+        // );
+
         isListingLoading.onFalse();
 
         reservedPropertyIds = new Set(

@@ -12,16 +12,18 @@ import { fShortenNumber } from 'src/utils/format-number';
 // ----------------------------------------------------------------------
 
 export default function TravelOrderCompletedInfo({ tour }) {
-  const { slug, ratingNumber, totalReviews, tourGuide } = tour;
+  const { title } = tour;
+  const ratingNumber = 4;
+  const totalReviews = 8765;
 
-  return (
+  return  (
     <Stack
-      spacing={2}
+      spacing={1}
       direction={{ xs: 'column', md: 'row' }}
       justifyContent={{ md: 'space-between' }}
     >
       <Stack spacing={2}>
-        <Typography variant="h5">{slug}</Typography>
+        <Typography variant="h5">{title}</Typography>
 
         <Stack spacing={0.5} direction="row" alignItems="center">
           <Iconify icon="carbon:star-filled" sx={{ color: 'warning.main' }} />
@@ -37,7 +39,7 @@ export default function TravelOrderCompletedInfo({ tour }) {
         </Stack>
       </Stack>
 
-      <Stack direction="row" alignItems="center" spacing={1.5}>
+      {/* <Stack direction="row" alignItems="center" spacing={1.5}>
         <Avatar src={tourGuide?.avatarUrl} />
         <div>
           <Typography variant="body2" sx={{ color: 'text.disabled' }}>
@@ -45,19 +47,11 @@ export default function TravelOrderCompletedInfo({ tour }) {
           </Typography>
           <Typography variant="subtitle2">{tourGuide?.name}</Typography>
         </div>
-      </Stack>
+      </Stack> */}
     </Stack>
   );
 }
 
 TravelOrderCompletedInfo.propTypes = {
-  tour: PropTypes.shape({
-    slug: PropTypes.string,
-    ratingNumber: PropTypes.number,
-    totalReviews: PropTypes.number,
-    tourGuide: PropTypes.shape({
-      avatarUrl: PropTypes.string,
-      name: PropTypes.string,
-    }),
-  }),
+  tour: PropTypes.object,
 };

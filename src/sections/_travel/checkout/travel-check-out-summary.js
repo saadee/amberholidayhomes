@@ -11,27 +11,20 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
 import { fDate } from 'src/utils/format-time';
-import { getNightsFromDates } from 'src/utils/common';
-import { fCurrency, fShortenNumber } from 'src/utils/format-number';
+import { fShortenNumber } from 'src/utils/format-number';
 
 // ----------------------------------------------------------------------
 
 export default function TravelCheckOutSummary({
-  tour,
   guestsToBooked,
   dates,
   isSubmitting,
-  onDecreaseGuests,
-  onIncrementGuests,
-  onChangeDepartureDay,
   propertyToView,
 }) {
-  const { images, title, rentPerNight, rooms, bath, guests } = propertyToView;
+  const { images, title, rooms, bath, guests } = propertyToView;
 
-  const totalAmount = fCurrency(getNightsFromDates(dates) * rentPerNight);
-
-  const checkInDate = fDate(dates[0]);
-  const checkOutDate = fDate(dates[1]);
+  const checkInDate = fDate(dates ? dates[0] : new Date());
+  const checkOutDate = fDate(dates ? dates[1] : new Date());
 
   return (
     <Card>
@@ -49,7 +42,9 @@ export default function TravelCheckOutSummary({
           },
         }}
       >
-        <Image alt={title} src={images[0]} ratio="1/1" sx={{ borderRadius: 2 }} />
+        {images?.length > 0 && (
+          <Image alt={title} src={images[0]} ratio="1/1" sx={{ borderRadius: 2 }} />
+        )}
 
         <Stack>
           <Typography variant="h5" sx={{ mb: 2 }}>
@@ -98,30 +93,8 @@ export default function TravelCheckOutSummary({
       </Box>
 
       <Stack sx={{ p: 4, pb: 3 }}>
-        <Stack
-          spacing={2.5}
-          direction={{ xs: 'column', sm: 'row' }}
-          sx={{
-            p: 2.5,
-            borderRadius: 2,
-            color: 'text.disabled',
-            bgcolor: 'background.neutral',
-          }}
-        >
-          <Stack direction="row" spacing={1.5} sx={{ width: 0.2 }}>
-            <Iconify icon="carbon:events" width={24} />
-
-            <Stack spacing={0.5}>
-              <Typography variant="caption">Guests</Typography>
-              <Typography variant="body" color="text.primary">
-                {guestsToBooked.adults + guestsToBooked.children}
-              </Typography>
-            </Stack>
-          </Stack>
-
-          <Divider flexItem sx={{ borderStyle: 'dashed' }} />
-
-          <Stack direction="row" spacing={1.5} sx={{ width: 1 }}>
+        <Stack spacing={2.5} direction={{ xs: 'column', sm: 'row' }}>
+          <Stack direction="row" spacing={1.5}>
             <Iconify icon="carbon:calendar" width={24} />
 
             <Stack spacing={0.5}>
@@ -132,36 +105,25 @@ export default function TravelCheckOutSummary({
             </Stack>
           </Stack>
         </Stack>
+      </Stack>
+      <Divider flexItem sx={{ borderStyle: 'dashed' }} />
+      <Stack sx={{ p: 4, pb: 3 }}>
+        <Stack spacing={2.5} direction={{ xs: 'column', sm: 'row' }}>
+          <Stack direction="row" spacing={1.5}>
+            <Iconify icon="carbon:events" width={24} />
 
-        {/* <Stack
-          spacing={1}
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          sx={{ mt: 3, mb: 2 }}
-        >
-          <Typography variant="body2" sx={{ color: 'text.disabled' }}>
-            Service charge
-          </Typography>
-          <Typography variant="body2">{fCurrency(price)}</Typography>
+            <Stack spacing={0.5}>
+              <Typography variant="caption">Total Guests</Typography>
+              <Typography variant="body" color="text.primary">
+                {guestsToBooked.adults > 0 ? `${guestsToBooked.adults} Adults` : ''}
+                {guestsToBooked.children > 0 ? `, ${guestsToBooked.children} Kids` : ''}
+              </Typography>
+            </Stack>
+          </Stack>
         </Stack>
-
-        <Stack spacing={1} direction="row" alignItems="center" justifyContent="space-between">
-          <Typography variant="body2" sx={{ color: 'text.disabled' }}>
-            Discount
-          </Typography>
-          <Typography variant="body2">-</Typography>
-        </Stack> */}
       </Stack>
 
-      <Divider sx={{ borderStyle: 'dashed' }} />
-
-      <Stack spacing={3} sx={{ p: 3 }}>
-        <Stack spacing={1} direction="row" alignItems="center" justifyContent="space-between">
-          <Typography variant="h5">Total</Typography>
-          <Typography variant="h5">{totalAmount}</Typography>
-        </Stack>
-
+      <Stack spacing={2} sx={{ p: 3 }}>
         <LoadingButton
           type="submit"
           size="large"
@@ -169,7 +131,7 @@ export default function TravelCheckOutSummary({
           color="inherit"
           loading={isSubmitting}
         >
-          Complete Booking
+          Proceed to Pay
         </LoadingButton>
       </Stack>
     </Card>
@@ -178,24 +140,11 @@ export default function TravelCheckOutSummary({
 
 TravelCheckOutSummary.propTypes = {
   isSubmitting: PropTypes.bool,
-  onDecreaseGuests: PropTypes.func,
-  onIncrementGuests: PropTypes.func,
-  onChangeDepartureDay: PropTypes.func,
+
   dates: PropTypes.instanceOf(Date),
   guestsToBooked: PropTypes.shape({
     adults: PropTypes.number,
     children: PropTypes.number,
   }),
   propertyToView: PropTypes.object,
-  tour: PropTypes.shape({
-    slug: PropTypes.string,
-    price: PropTypes.number,
-    coverUrl: PropTypes.string,
-    ratingNumber: PropTypes.number,
-    totalReviews: PropTypes.number,
-    tourGuide: PropTypes.shape({
-      name: PropTypes.string,
-      avatarUrl: PropTypes.string,
-    }),
-  }),
 };

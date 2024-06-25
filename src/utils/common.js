@@ -54,3 +54,60 @@ export const getMaxGuests = (propertyType, isVilla, beds) => {
   }
   return { adults: 0, children: 0 }; // Default case
 };
+
+export const getTourismDirhamFee = (propertyType, nights) => {
+  let tourismDirhamFee = 0;
+  const nightsToInclude = nights >= 30 ? 30 : nights; // only calculate the fee for first 30 days only
+
+  if (propertyType.includes('4')) {
+    tourismDirhamFee = 40 * nightsToInclude;
+  } else if (propertyType.includes('3')) {
+    tourismDirhamFee = 30 * nightsToInclude;
+  } else if (propertyType.includes('2')) {
+    tourismDirhamFee = 20 * nightsToInclude;
+  } else if (propertyType.includes('1')) {
+    tourismDirhamFee = 10 * nightsToInclude;
+  }
+  return tourismDirhamFee;
+};
+
+export const getReservationIncomes = ({ rentalAmount, ownerRatio, agencyRatio }) => {
+  const ownerIncome = rentalAmount * (ownerRatio / 100 || 0);
+  const income = rentalAmount * (agencyRatio / 100 || 0);
+
+  return { ownerIncome, income };
+};
+
+export const createReservationAmounts = (rentalAmount, property, dates, ownerStay) => {
+  if (!ownerStay) {
+    const securityAmount = property?.securityDeposit || 0;
+
+    const propertyType = property?.propertyType || '';
+
+    // Calculate VAT (5% of rental amount)
+    const vat5Per = rentalAmount * 0.05;
+
+    // calculate the number of nights
+    const nights = getNightsFromDates(dates) || 0;
+
+    // Determine Tourism Dirham Fee based on property type and nights
+    const tourismDirhamFee = getTourismDirhamFee(propertyType, nights);
+
+    // Calculate total amount
+    const totalAmount =
+      rentalAmount +
+      vat5Per +
+      //  + securityAmount
+      tourismDirhamFee;
+
+    // Parse and calculate owner's income and agency's income
+    const { income, ownerIncome } = getReservationIncomes({
+      rentalAmount,
+      ownerRatio: property?.ownerRatio || 80,
+      agencyRatio: property?.agencyRatio || 20,
+    });
+
+    return { totalAmount, ownerIncome, income, vat: vat5Per, tourismDirhamFee, securityAmount, };
+  }
+  return {};
+};
