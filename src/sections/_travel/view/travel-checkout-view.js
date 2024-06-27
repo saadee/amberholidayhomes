@@ -134,10 +134,10 @@ export default function TravelCheckoutView() {
         dates
       );
 
+      // const res = await axios.post(
+      // 'http://localhost:8000/api/pay',
       const res = await axios.post(
-        'http://localhost:8000/api/pay',
-        // const res = await axios.post(
-        //   'https://holidayhomes-stripe-node.vercel.app/api/pay',
+        'https://holidayhomes-stripe-node.vercel.app/api/pay',
 
         JSON.stringify({
           ...data,
