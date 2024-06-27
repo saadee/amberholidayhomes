@@ -14,7 +14,7 @@ import { _propertyType } from 'src/_mock';
 import { useRouter } from 'src/routes/hooks';
 import { fCurrency } from 'src/utils/format-number';
 import { usePropertyContext } from 'src/context/PropertyContext';
-import { getMaxGuests, getNightsFromDates } from 'src/utils/common';
+import { createReservationAmounts, getMaxGuests, getNightsFromDates } from 'src/utils/common';
 
 import FilterTime from '../filters/filter-time';
 import FilterGuests from '../filters/filter-guests';
@@ -73,11 +73,17 @@ export default function TravelTourDetailsReserveForm({ tour }) {
 
   const isPropertyAvailable = filterProperties?.find((e) => e?.id === tour.id);
 
-  const totalAmount = fCurrency(getNightsFromDates(dates) * rentPerNight);
+  const totalRentalAmount = getNightsFromDates(dates) * rentPerNight;
+
+  const { totalAmount, vat, tourismDirhamFee, securityAmount } = createReservationAmounts(
+    totalRentalAmount || 0,
+    tour,
+    dates
+  );
 
   return (
     <Card>
-      <Stack spacing={3} sx={{ p: 3 }}>
+      <Stack spacing={2} sx={{ p: 3 }}>
         <Stack spacing={1} direction="row" alignItems="center" sx={{ typography: 'h4' }}>
           {priceSale > 0 && (
             <Box sx={{ color: 'grey.500', textDecoration: 'line-through', mr: 1 }}>
@@ -126,27 +132,40 @@ export default function TravelTourDetailsReserveForm({ tour }) {
           </Box>
         </Stack>
 
-        {/* <Stack spacing={1} direction="row" alignItems="center" justifyContent="space-between">
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="body2" sx={{ color: 'text.disabled' }}>
-            Service charge
+            Rental Amount
           </Typography>
-          <Typography variant="body2">{fCurrency(priceSale) || '-'}</Typography>
+          <Typography variant="body2">{fCurrency(totalRentalAmount) || '-'}</Typography>
         </Stack>
 
-        <Stack spacing={1} direction="row" alignItems="center" justifyContent="space-between">
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="body2" sx={{ color: 'text.disabled' }}>
-            Discount
+            Security Desposit
           </Typography>
-          <Typography variant="body2"> - </Typography>
-        </Stack> */}
+          <Typography variant="body2"> {fCurrency(securityAmount) || '-'} </Typography>
+        </Stack>
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
+          <Typography variant="body2" sx={{ color: 'text.disabled' }}>
+            Toursim Fee
+          </Typography>
+          <Typography variant="body2">{fCurrency(tourismDirhamFee) || '-'}</Typography>
+        </Stack>
+
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
+          <Typography variant="body2" sx={{ color: 'text.disabled' }}>
+            Vat (5%)
+          </Typography>
+          <Typography variant="body2"> {fCurrency(vat) || '-'} </Typography>
+        </Stack>
       </Stack>
 
       <Divider sx={{ borderStyle: 'dashed' }} />
 
-      <Stack spacing={3} sx={{ p: 3 }}>
+      <Stack spacing={2} sx={{ p: 3 }}>
         <Stack spacing={1} direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="h5">Total</Typography>
-          <Typography variant="h5">{totalAmount}</Typography>
+          <Typography variant="h5">{fCurrency(totalAmount) || '-'}</Typography>
         </Stack>
 
         <Button

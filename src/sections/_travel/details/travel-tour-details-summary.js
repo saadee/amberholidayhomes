@@ -18,40 +18,7 @@ export default function TravelTourDetailsSummary({ propertyToView }) {
 
   return (
     <Stack spacing={5}>
-      <Stack spacing={3}>
-        <Typography variant="h5">Check In Details</Typography>
-        <Box
-          sx={{
-            rowGap: 2.5,
-            columnGap: 3,
-            display: 'grid',
-            gridTemplateColumns: {
-              xs: 'repeat(1, 1fr)',
-              sm: 'repeat(2, 1fr)',
-            },
-          }}
-        >
-          {checkInHour && (
-            <OverviewItem
-              icon="carbon:time"
-              label="Check In"
-              text={fDateTime(checkInHour.toDate(), 'p')}
-            />
-          )}
-          {checkInHour && (
-            <OverviewItem
-              icon="carbon:time"
-              label="Check Out"
-              text={fDateTime(checkOutHour.toDate(), 'p')}
-            />
-          )}
-          <OverviewItem
-            label="Late Check-in"
-            text="Please note that our standard check-in time is 3:00 pm and check-out time is 12:00 pm. Early check-ins and late check-outs are subject to availability and additional charges may apply!"
-          />
-          <OverviewItem label="Cancellation" text="Non-Refundable" />
-        </Box>
-      </Stack>
+
 
       {/* {renderDetails} */}
 

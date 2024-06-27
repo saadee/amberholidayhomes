@@ -49,13 +49,13 @@ export default function TravelOrderCompletedSummary({ reservation }) {
       {/* <LineItem icon="carbon:calendar" label="Booking day" value={fDate(new Date())} /> */}
       <Divider sx={{ borderStyle: 'dashed' }} />
       <LineItem icon="grommet-icons:money" label="Rent" value={fCurrency(rentalAmount)} />
+      <LineItem icon="carbon:receipt" label="Security Deposit" value={fCurrency(securityAmount)} />
       <LineItem
         icon="mdi:hand-coin-outline"
         label="Toursim Fee"
         value={fCurrency(tourismDirhamFee)}
       />
       <LineItem icon="tabler:tax" label="VAT" value={fCurrency(vat)} />
-      <LineItem icon="carbon:receipt" label="Security Deposit" value={fCurrency(securityAmount)} />
       <Divider sx={{ borderStyle: 'dashed' }} />
       <Stack
         direction="row"
@@ -63,10 +63,7 @@ export default function TravelOrderCompletedSummary({ reservation }) {
         sx={{ typography: 'body2', color: 'text.secondary' }}
       >
         <Typography variant="h4">Total</Typography>
-        <Typography
-          variant="h4"
-          sx={{ color: 'text.primary', flexGrow: 1, textAlign: 'right' }}
-        >
+        <Typography variant="h4" sx={{ color: 'text.primary', flexGrow: 1, textAlign: 'right' }}>
           {fCurrency(totalAmount)}
         </Typography>
       </Stack>

@@ -2,7 +2,7 @@ import { useParams } from 'react-router';
 import { useEffect, useCallback } from 'react';
 import { doc, getDoc, collection } from 'firebase/firestore';
 
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Unstable_Grid2';
 import Container from '@mui/material/Container';
@@ -96,7 +96,9 @@ export default function TravelTourView() {
 
           <Grid container columnSpacing={8} rowSpacing={5} direction="row-reverse">
             <Grid xs={12} md={5} lg={4}>
-              <TravelTourDetailsReserveForm tour={propertyToView} />
+              <Box>
+                <TravelTourDetailsReserveForm tour={propertyToView} />
+              </Box>
             </Grid>
 
             <Grid xs={12} md={7} lg={8}>
