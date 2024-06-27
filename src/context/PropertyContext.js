@@ -52,8 +52,6 @@ export const PropertyProvider = ({ children }) => {
     ? new Date(dates?.[1]).setHours(12, 0, 0, 0) // 12pm Noon
     : null;
 
-  console.log('filterProperties?.length', filterProperties?.length);
-
   //--------------------------------------------------------------------
   // Side Effects
   //--------------------------------------------------------------------
@@ -113,12 +111,13 @@ export const PropertyProvider = ({ children }) => {
     const childGuests = guests?.children || 0;
     // const totalGuests = adultGuests + childGuests;
 
-    if (bath) propertiesToDisplay = propertiesToDisplay?.filter((e) => e?.bath >= bath);
-    if (rooms) propertiesToDisplay = propertiesToDisplay?.filter((e) => e?.rooms >= rooms);
     if (location) propertiesToDisplay = propertiesToDisplay?.filter((e) => e?.area === location);
 
     if (propertyType)
       propertiesToDisplay = propertiesToDisplay?.filter((e) => e?.propertyType === propertyType);
+
+    if (rooms > 0) propertiesToDisplay = propertiesToDisplay?.filter((e) => e?.rooms >= rooms);
+    if (bath) propertiesToDisplay = propertiesToDisplay?.filter((e) => e?.bath >= bath);
 
     propertiesToDisplay = propertiesToDisplay?.filter((e) => {
       const isVilla = e?.propertyType.includes('Villa');
@@ -133,16 +132,13 @@ export const PropertyProvider = ({ children }) => {
   const getAvailableProperties = async () => {
     try {
       if (!isPropertiesLoading.value && properties?.length > 0) {
-        console.log('Get Available Property');
-
         const propertiesToDisplay = properties;
         let reservedPropertyIds = {};
         let availableProperties = [];
 
-        console.log(checkInDate, checkOutDate);
-
         if (checkInDate !== null && checkOutDate !== null) {
-          console.log('fetching from Firebase');
+          // console.log('fetching from Firebase');
+
           const reservationsRef = collection(DB, 'reservations');
           const reservationsQuery = query(
             reservationsRef,
@@ -190,6 +186,7 @@ export const PropertyProvider = ({ children }) => {
     }
   };
 
+  // console.log('prop', filterProperties);
   // --------------------------------------------------------------------
   // Return
   // --------------------------------------------------------------------

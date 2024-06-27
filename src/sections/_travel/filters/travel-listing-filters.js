@@ -108,7 +108,7 @@ export default function TravelListingFilters({ sx, ...other }) {
         value={propertyType}
       />
       <Divider flexItem orientation="vertical" />
-      <FilterRoom onChange={(e, value) => setFilters({ ...filters, room: value })} value={rooms} />
+      <FilterRoom onChange={(e, value) => setFilters({ ...filters, rooms: value })} value={rooms} />
       <Divider flexItem orientation="vertical" />
       <FilterBath onChange={(e, value) => setFilters({ ...filters, bath: value })} value={bath} />
 

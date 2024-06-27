@@ -12,7 +12,7 @@ export default function FilterRoom(props) {
       {...props}
       sx={{ width: 0.7 }}
       popupIcon={null}
-      options={[...Array(10)].map((option, i) => i + 1)}
+      options={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((option, i) => option)}
       getOptionLabel={(option) => option}
       renderInput={(params) => (
         <InputBase
