@@ -11,6 +11,7 @@ import { useMemo, useState, useEffect, useContext, useCallback, createContext } 
 import { getMaxGuests } from 'src/utils/common';
 import { useBoolean } from 'src/hooks/use-boolean';
 
+import { usePathname, useRouter } from 'src/routes/hooks';
 import { DB } from './AuthContext';
 
 export const PropertyContext = createContext({});
@@ -19,6 +20,7 @@ export const usePropertyContext = () => useContext(PropertyContext);
 // ----------------------------------------------------------------------
 
 export const PropertyProvider = ({ children }) => {
+  const pathname = usePathname();
   const isPropertiesLoading = useBoolean();
   const isListingLoading = useBoolean(true);
   const openLoginModal = useBoolean(false);
@@ -50,6 +52,8 @@ export const PropertyProvider = ({ children }) => {
     ? new Date(dates?.[1]).setHours(12, 0, 0, 0) // 12pm Noon
     : null;
 
+  console.log('filterProperties?.length', filterProperties?.length);
+
   //--------------------------------------------------------------------
   // Side Effects
   //--------------------------------------------------------------------
@@ -61,17 +65,16 @@ export const PropertyProvider = ({ children }) => {
 
   useEffect(() => {
     (async () => {
-      await getAvailableProperties({});
+      if (pathname !== '/') await getAvailableProperties();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters]);
+  }, [filters, pathname]);
 
   //--------------------------------------------------------------------
   // Callbacks
   //--------------------------------------------------------------------
 
   const getAllProperties = useCallback(async () => {
-    isPropertiesLoading.onToggle();
     // Reference to the 'properties' collection
     const propertyCollection = collection(DB, 'property');
 
@@ -79,23 +82,28 @@ export const PropertyProvider = ({ children }) => {
     const q = query(propertyCollection);
 
     try {
-      const querySnapshot = await getDocs(q);
+      if (filters?.dates[0] === null && filters?.dates[1] === null) {
+        console.log('Getting all properties');
+        isPropertiesLoading.onToggle();
+        const querySnapshot = await getDocs(q);
 
-      const data = [];
+        const data = [];
 
-      querySnapshot.forEach((d) => {
-        data.push({ id: d.id, ...d.data() });
-      });
+        querySnapshot.forEach((d) => {
+          data.push({ id: d.id, ...d.data() });
+        });
 
-      const Shuffled = data;
+        const Shuffled = data;
 
-      setProperties(Shuffled);
-      isPropertiesLoading.onToggle();
+        setProperties(Shuffled);
+        isPropertiesLoading.onToggle();
+      }
     } catch (error) {
       isPropertiesLoading.onToggle();
       console.error('Error getting documents: ', error);
     }
-  }, [isPropertiesLoading]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // eslint-disable-next-line no-shadow
   const filterOutBasedonSpecs = ({ propertiesToDisplay, filters }) => {
@@ -124,50 +132,58 @@ export const PropertyProvider = ({ children }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getAvailableProperties = async () => {
     try {
-      const propertiesToDisplay = properties;
-      let reservedPropertyIds = {};
-      let availableProperties = [];
+      if (!isPropertiesLoading.value && properties?.length > 0) {
+        console.log('Get Available Property');
 
-      if (checkInDate && checkOutDate) {
-        const reservationsRef = collection(DB, 'reservations');
-        const reservationsQuery = query(
-          reservationsRef,
-          where('checkIn', '<', checkOutDate),
-          where('checkOut', '>', checkInDate)
-        );
+        const propertiesToDisplay = properties;
+        let reservedPropertyIds = {};
+        let availableProperties = [];
 
-        isListingLoading.onTrue();
+        console.log(checkInDate, checkOutDate);
 
-        const reservationDocs = await getDocs(reservationsQuery);
-        const overlappingReservations = reservationDocs.docs.map((doc) => doc.data());
-        // overlappingReservations = overlappingReservations.filter(
-        //   (reservation) => reservation.checkIn < checkOutDate && reservation.checkOut > checkInDate
-        // );
+        if (checkInDate !== null && checkOutDate !== null) {
+          console.log('fetching from Firebase');
+          const reservationsRef = collection(DB, 'reservations');
+          const reservationsQuery = query(
+            reservationsRef,
+            where('checkIn', '<', checkOutDate),
+            where('checkOut', '>', checkInDate)
+          );
 
-        isListingLoading.onFalse();
+          isListingLoading.onTrue();
 
-        reservedPropertyIds = new Set(
-          overlappingReservations.map((reservation) => reservation.propertyId)
-        );
-        const filteredProperties = filterOutBasedonSpecs({
-          propertiesToDisplay,
-          filters,
-        });
-        availableProperties = filteredProperties.filter(
-          (property) => !reservedPropertyIds.has(property.id)
-        );
-      } else {
-        const filteredProperties = filterOutBasedonSpecs({
-          propertiesToDisplay,
-          filters,
-        });
-        availableProperties = filteredProperties;
+          const reservationDocs = await getDocs(reservationsQuery);
+          const overlappingReservations = reservationDocs.docs.map((doc) => doc.data());
+          // overlappingReservations = overlappingReservations.filter(
+          //   (reservation) => reservation.checkIn < checkOutDate && reservation.checkOut > checkInDate
+          // );
+
+          isListingLoading.onFalse();
+
+          reservedPropertyIds = new Set(
+            overlappingReservations.map((reservation) => reservation.propertyId)
+          );
+          const filteredProperties = filterOutBasedonSpecs({
+            propertiesToDisplay,
+            filters,
+          });
+          availableProperties = filteredProperties.filter(
+            (property) => !reservedPropertyIds.has(property.id)
+          );
+        } else {
+          const filteredProperties = filterOutBasedonSpecs({
+            propertiesToDisplay,
+            filters,
+          });
+          availableProperties = filteredProperties;
+        }
+
+        // Perform Firebase operations here before returning
+        // For example, if you need to update something in Firebase, do it here
+        setFilterProperties(availableProperties);
+        return availableProperties;
       }
-
-      // Perform Firebase operations here before returning
-      // For example, if you need to update something in Firebase, do it here
-      setFilterProperties(availableProperties);
-      return availableProperties;
+      return null;
     } catch (error) {
       console.log('Error in getting Available properties', error);
       return null;

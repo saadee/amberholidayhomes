@@ -117,7 +117,7 @@ export default function Header({ headerOnDark }) {
                 </IconButton>
               )}
 
-              <Badge badgeContent={2} color="info">
+              {/* <Badge badgeContent={2} color="info">
                 <IconButton
                   component={RouterLink}
                   href={paths.wishlist}
@@ -137,7 +137,7 @@ export default function Header({ headerOnDark }) {
                 sx={{ p: 0 }}
               >
                 <Iconify icon="carbon:user" width={24} />
-              </IconButton>
+              </IconButton> */}
             </Stack>
           </Stack>
 
