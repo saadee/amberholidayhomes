@@ -94,11 +94,7 @@ export const createReservationAmounts = (rentalAmount, property, dates, ownerSta
     const tourismDirhamFee = getTourismDirhamFee(propertyType, nights);
 
     // Calculate total amount
-    const totalAmount =
-      rentalAmount +
-      vat5Per +
-      //  + securityAmount
-      tourismDirhamFee;
+    const totalAmount = rentalAmount + vat5Per + securityAmount + tourismDirhamFee;
 
     // Parse and calculate owner's income and agency's income
     const { income, ownerIncome } = getReservationIncomes({
@@ -107,7 +103,7 @@ export const createReservationAmounts = (rentalAmount, property, dates, ownerSta
       agencyRatio: property?.agencyRatio || 20,
     });
 
-    return { totalAmount, ownerIncome, income, vat: vat5Per, tourismDirhamFee, securityAmount, };
+    return { totalAmount, ownerIncome, income, vat: vat5Per, tourismDirhamFee, securityAmount };
   }
   return {};
 };

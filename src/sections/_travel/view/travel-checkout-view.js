@@ -42,7 +42,7 @@ export default function TravelCheckoutView() {
   const { setFilters, filters, propertyToView } = usePropertyContext();
   const { dates, guests } = filters;
 
-  const { images, title, rentPerNight, propertyType } = propertyToView;
+  const { images, title, rentPerNight, propertyType, securityDeposit } = propertyToView;
 
   const checkInDate = fDate(dates ? dates[0] : new Date());
   const checkOutDate = fDate(dates ? dates[1] : new Date());
@@ -128,25 +128,36 @@ export default function TravelCheckoutView() {
     try {
       const resId = await createReservation(data);
 
-      // const res = await axios.post(
-      //   'http://localhost:8000/api/pay',
+      const { totalAmount, vat, tourismDirhamFee, securityAmount } = createReservationAmounts(
+        totalRentalAmount,
+        propertyToView,
+        dates
+      );
+
       const res = await axios.post(
-        'https://holidayhomes-stripe-node.vercel.app/api/pay',
+        'http://localhost:8000/api/pay',
+        // const res = await axios.post(
+        //   'https://holidayhomes-stripe-node.vercel.app/api/pay',
 
         JSON.stringify({
           ...data,
           domain: window.location.origin,
           imageUrl: images[0],
           propertyName: title,
-          amount: totalAmountToSend,
+          totalRentalAmount,
+          totalAmount,
+          vat,
+          tourismDirhamFee,
+          securityAmount,
           reservationId: resId,
           metaData: {
             reservationId: resId,
           },
           description: `
-          Your booking for ${
-            guests.adults + guests.children
-          } guests from  ${checkInDate} - ${checkOutDate}
+          Your booking for
+            ${guests.adults > 0 ? `${guests.adults} Adults` : ''}
+            ${guests.children > 0 ? `, ${guests.children} Kids` : ''}
+          } from  ${checkInDate} - ${checkOutDate}
           `,
         }),
         {
@@ -234,6 +245,15 @@ export default function TravelCheckoutView() {
                   alignItems="center"
                   justifyContent="space-between"
                 >
+                  <Typography variant="body2">Security Desposit</Typography>
+                  <Typography variant="body2">{fCurrency(securityDeposit)}</Typography>
+                </Stack>
+                <Stack
+                  spacing={1}
+                  direction="row"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
                   <Typography variant="body2">Toursim Fee</Typography>
                   <Typography variant="body2">{fCurrency(TDF)}</Typography>
                 </Stack>
@@ -243,7 +263,7 @@ export default function TravelCheckoutView() {
                   alignItems="center"
                   justifyContent="space-between"
                 >
-                  <Typography variant="body2">Vat</Typography>
+                  <Typography variant="body2">Vat (5%)</Typography>
                   <Typography variant="body2">{fCurrency(vat5Per)}</Typography>
                 </Stack>
                 <Stack
@@ -254,7 +274,7 @@ export default function TravelCheckoutView() {
                 >
                   <Typography variant="h5">Total</Typography>
                   <Typography variant="h5">
-                    {fCurrency(totalRentalAmount + vat5Per + TDF)}
+                    {fCurrency(totalRentalAmount + vat5Per + TDF + securityDeposit)}
                   </Typography>
                 </Stack>
               </Stack>

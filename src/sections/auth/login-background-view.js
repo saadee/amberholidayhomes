@@ -16,11 +16,15 @@ import Iconify from 'src/components/iconify';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { RouterLink } from 'src/routes/components';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
+import { Box } from '@mui/material';
+import { usePropertyContext } from 'src/context/PropertyContext';
 
 // ----------------------------------------------------------------------
 
 export default function LoginBackgroundView() {
   const passwordShow = useBoolean();
+
+  const { openLoginModal } = usePropertyContext();
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().required('Email is required').email('That is not an email'),
@@ -56,12 +60,14 @@ export default function LoginBackgroundView() {
   });
 
   const renderHead = (
-    <div>
-      <Typography variant="h3" paragraph>
-        Login
-      </Typography>
+    <Box>
+      <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Typography variant="h3" paragraph>
+          Login
+        </Typography>
+      </Stack>
 
-      <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+      <Typography variant="body2" sx={{ color: 'text.secondary', pb: 2 }}>
         {`Don’t have an account? `}
         <Link
           component={RouterLink}
@@ -72,7 +78,7 @@ export default function LoginBackgroundView() {
           Get started
         </Link>
       </Typography>
-    </div>
+    </Box>
   );
 
   const renderSocials = (
@@ -81,20 +87,20 @@ export default function LoginBackgroundView() {
         <Iconify icon="logos:google-icon" width={24} />
       </Button>
 
-      <Button fullWidth size="large" color="inherit" variant="outlined">
+      {/* <Button fullWidth size="large" color="inherit" variant="outlined">
         <Iconify icon="carbon:logo-facebook" width={24} sx={{ color: '#1877F2' }} />
-      </Button>
+      </Button> */}
 
-      <Button color="inherit" fullWidth variant="outlined" size="large">
+      {/* <Button color="inherit" fullWidth variant="outlined" size="large">
         <Iconify icon="carbon:logo-github" width={24} sx={{ color: 'text.primary' }} />
-      </Button>
+      </Button> */}
     </Stack>
   );
 
   const renderForm = (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Stack spacing={2.5} alignItems="flex-end">
-        <RHFTextField name="email" label="Email address" />
+        <RHFTextField name="email" label="Email address" fullWidth />
 
         <RHFTextField
           name="password"
@@ -136,18 +142,25 @@ export default function LoginBackgroundView() {
   );
 
   return (
-    <>
-      {renderHead}
+    <Box sx={{ minWidth: { xs: '100%', sm: '400px' } }}>
+      <Stack direction="row" justifyContent="flex-end" alignItems="center" sx={{  pt: 2 }}>
+        <Button color="inherit" onClick={() => openLoginModal.onFalse()}>
+          <Iconify icon="ic:round-close" width={24} />
+        </Button>
+      </Stack>
+      <Box sx={{ p: 3, pt: 0 }}>
+        {renderHead}
 
-      {renderForm}
+        {renderForm}
 
-      <Divider>
-        <Typography variant="body2" sx={{ color: 'text.disabled' }}>
-          or continue with
-        </Typography>
-      </Divider>
+        <Divider sx={{ py: 3 }}>
+          <Typography variant="body2" sx={{ color: 'text.disabled' }}>
+            or continue with
+          </Typography>
+        </Divider>
 
-      {renderSocials}
-    </>
+        {renderSocials}
+      </Box>
+    </Box>
   );
 }

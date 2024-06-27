@@ -3,7 +3,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import { useParams, useSearchParams } from 'react-router-dom';
+// import { useParams, useSearchParams } from 'react-router-dom';
 
 import { RESERVATION_STATUS_OPTIONS, _tours } from 'src/_mock';
 import Image from 'src/components/image';
@@ -17,10 +17,11 @@ import { DB } from 'src/context/AuthContext';
 import { collection, doc, getDoc, updateDoc } from 'firebase/firestore';
 import TravelOrderCompletedInfo from '../order-completed/travel-order-completed-info';
 import TravelOrderCompletedSummary from '../order-completed/travel-order-completed-summary';
+// import Invoice from './travel-invoice';
 
 // ----------------------------------------------------------------------
 
-const _mockTour = _tours[1];
+// const _mockTour = _tours[1];
 
 export default function TravelOrderCompletedView() {
   const mdUp = useResponsive('up', 'md');
@@ -30,7 +31,7 @@ export default function TravelOrderCompletedView() {
 
   const { properties } = usePropertyContext();
 
-  console.log('search', window.location.search);
+  // console.log('search', window.location.search);
 
   const getAndMarkReservationAsPaid = useCallback(
     async (reservationId) => {
@@ -46,11 +47,14 @@ export default function TravelOrderCompletedView() {
         if (documentSnapshot.exists()) {
           const reservationData = { id: documentSnapshot.id, ...documentSnapshot.data() };
           setReservationToView(reservationData);
-          // Update the reservation document to set 'isPaid' to true
-          await updateDoc(reservationDocRef, {
-            isPaid: true,
-            status: RESERVATION_STATUS_OPTIONS[1]?.value,
-          });
+
+          if (!reservationData.isPaid) {
+            // Update the reservation document to set 'isPaid' to true
+            await updateDoc(reservationDocRef, {
+              isPaid: true,
+              status: RESERVATION_STATUS_OPTIONS[1]?.value,
+            });
+          }
           console.log('Reservation marked as paid');
         } else {
           console.log('Reservation document not found');
@@ -73,10 +77,10 @@ export default function TravelOrderCompletedView() {
     })();
   }, [getAndMarkReservationAsPaid, router]);
 
-  console.log('reservationToView', reservationToView);
+  // console.log('reservationToView', reservationToView);
 
   const property = properties?.find((e) => e.id === reservationToView?.propertyId);
-  console.log('property', property);
+  // console.log('property', property);
 
   return (
     reservationToView?.id && (
@@ -100,8 +104,8 @@ export default function TravelOrderCompletedView() {
           {property && <TravelOrderCompletedInfo tour={property} />}
 
           <TravelOrderCompletedSummary reservation={reservationToView} />
-
-          <Stack spacing={2.5} direction={{ xs: 'column', md: 'row' }} justifyContent="center">
+          {/* <Invoice /> */}
+          {/* <Stack spacing={2.5} direction={{ xs: 'column', md: 'row' }} justifyContent="center">
             <Button
               component={RouterLink}
               href="/"
@@ -121,7 +125,7 @@ export default function TravelOrderCompletedView() {
             >
               Download Invoice
             </Button>
-          </Stack>
+          </Stack> */}
         </Stack>
       </Container>
     )

@@ -11,8 +11,17 @@ import { fCurrency } from 'src/utils/format-number';
 // ----------------------------------------------------------------------
 
 export default function TravelOrderCompletedSummary({ reservation }) {
-  const { checkIn, checkOut, guests, rentalAmount, totalAmount, tourismDirhamFee, vat, id } =
-    reservation;
+  const {
+    checkIn,
+    checkOut,
+    guests,
+    rentalAmount,
+    totalAmount,
+    tourismDirhamFee,
+    vat,
+    id,
+    securityAmount,
+  } = reservation;
   return (
     <Stack
       spacing={3}
@@ -46,8 +55,21 @@ export default function TravelOrderCompletedSummary({ reservation }) {
         value={fCurrency(tourismDirhamFee)}
       />
       <LineItem icon="tabler:tax" label="VAT" value={fCurrency(vat)} />
+      <LineItem icon="carbon:receipt" label="Security Deposit" value={fCurrency(securityAmount)} />
       <Divider sx={{ borderStyle: 'dashed' }} />
-      <LineItem icon="carbon:receipt" label="Total" value={fCurrency(totalAmount)} />
+      <Stack
+        direction="row"
+        alignItems="center"
+        sx={{ typography: 'body2', color: 'text.secondary' }}
+      >
+        <Typography variant="h4">Total</Typography>
+        <Typography
+          variant="h4"
+          sx={{ color: 'text.primary', flexGrow: 1, textAlign: 'right' }}
+        >
+          {fCurrency(totalAmount)}
+        </Typography>
+      </Stack>
       {/* <LineItem icon="carbon:receipt" label="Total" value={fCurrency(1112)} /> */}
       {/* <LineItem icon="carbon:receipt" label="Total" value={fCurrency(1112)} /> */}
 

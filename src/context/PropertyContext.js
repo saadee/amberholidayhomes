@@ -21,7 +21,7 @@ export const usePropertyContext = () => useContext(PropertyContext);
 export const PropertyProvider = ({ children }) => {
   const isPropertiesLoading = useBoolean();
   const isListingLoading = useBoolean(true);
-
+  const openLoginModal = useBoolean(false);
   // ---------------------------------------------------------------------
   //  Local states
   // ---------------------------------------------------------------------
@@ -189,8 +189,9 @@ export const PropertyProvider = ({ children }) => {
       setPropertyToView,
       filters,
       setFilters,
+      openLoginModal,
     }),
-    [properties, filterProperties, isListingLoading, propertyToView, filters]
+    [properties, filterProperties, isListingLoading, propertyToView, filters, openLoginModal]
   );
   return <PropertyContext.Provider value={memoizedValue}>{children}</PropertyContext.Provider>;
 };

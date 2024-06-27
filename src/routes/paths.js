@@ -106,6 +106,17 @@ export const paths = {
   checkout: '/checkout',
   listingsView: (id) => `/listing/${id}`,
   orderCompleted: '/order-completed',
+
+  wishlist: `/wishlist`,
+  compare: `/compare`,
+  account: {
+    root: `/account`,
+    personal: `/account/personal`,
+    wishlist: `/account/wishlist`,
+    vouchers: `/account/vouchers`,
+    orders: `/account/orders`,
+    payment: `/account/payment`,
+  },
   docs: 'https://zone-docs.vercel.app',
   license: 'https://material-ui.com/store/license/#i-standard-license',
   minimalStore: 'https://material-ui.com/store/items/minimal-dashboard',

@@ -14,7 +14,7 @@ export default function AuthBackgroundLayout({ children }) {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
 
       <Stack
         alignItems="center"

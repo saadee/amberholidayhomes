@@ -4,7 +4,9 @@ import Box from '@mui/material/Box';
 
 import { usePathname } from 'src/routes/hooks';
 
+import LoginModal from 'src/components/LoginModal';
 import { HEADER } from '../config-layout';
+
 
 import Header from './header';
 import Footer from './footer';
@@ -41,6 +43,8 @@ export default function MainLayout({ children }) {
 
         {children}
       </Box>
+      
+      <LoginModal/>
 
       <Footer />
     </Box>

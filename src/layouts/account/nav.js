@@ -23,27 +23,27 @@ import { useResponsive } from 'src/hooks/use-responsive';
 const navigations = [
   {
     title: 'Personal Info',
-    path: paths.eCommerce.account.personal,
+    path: paths.account.personal,
     icon: <Iconify icon="carbon:user" />,
   },
   {
     title: 'Wishlist',
-    path: paths.eCommerce.account.wishlist,
+    path: paths.account.wishlist,
     icon: <Iconify icon="carbon:favorite" />,
   },
   {
     title: 'Vouchers',
-    path: paths.eCommerce.account.vouchers,
+    path: paths.account.vouchers,
     icon: <Iconify icon="carbon:cut-out" />,
   },
   {
     title: 'Orders',
-    path: paths.eCommerce.account.orders,
+    path: paths.account.orders,
     icon: <Iconify icon="carbon:document" />,
   },
   {
     title: 'Payment',
-    path: paths.eCommerce.account.payment,
+    path: paths.account.payment,
     icon: <Iconify icon="carbon:purchase" />,
   },
 ];

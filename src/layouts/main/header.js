@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import Badge from '@mui/material/Badge';
 import Button from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,9 +12,12 @@ import Container from '@mui/material/Container';
 import { bgBlur } from 'src/theme/css';
 import Logo from 'src/components/logo';
 import { paths } from 'src/routes/paths';
+import Iconify from 'src/components/iconify';
+import { RouterLink } from 'src/routes/components';
 import { useOffSetTop } from 'src/hooks/use-off-set-top';
 import { useResponsive } from 'src/hooks/use-responsive';
 
+import { IconButton } from '@mui/material';
 import { HEADER } from '../config-layout';
 import HeaderShadow from '../common/header-shadow';
 
@@ -100,6 +104,41 @@ export default function Header({ headerOnDark }) {
                 Owner Portal
               </Button>
             )}
+            <Stack
+              spacing={3}
+              direction="row"
+              alignItems="center"
+              flexGrow={1}
+              justifyContent="flex-end"
+            >
+              {!mdUp && (
+                <IconButton size="small" color="inherit" sx={{ p: 0 }}>
+                  <Iconify icon="carbon:search" width={24} />
+                </IconButton>
+              )}
+
+              <Badge badgeContent={2} color="info">
+                <IconButton
+                  component={RouterLink}
+                  href={paths.wishlist}
+                  size="small"
+                  color="inherit"
+                  sx={{ p: 0 }}
+                >
+                  <Iconify icon="carbon:favorite" width={24} />
+                </IconButton>
+              </Badge>
+
+              <IconButton
+                component={RouterLink}
+                href={paths.account.personal}
+                size="small"
+                color="inherit"
+                sx={{ p: 0 }}
+              >
+                <Iconify icon="carbon:user" width={24} />
+              </IconButton>
+            </Stack>
           </Stack>
 
           {!mdUp && <NavMobile data={navConfig} />}
